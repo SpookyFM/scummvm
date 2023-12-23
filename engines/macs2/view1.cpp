@@ -23,11 +23,15 @@
 #include "graphics/palette.h"
 #include "macs2/view1.h"
 #include "macs2/macs2.h"
+#include <graphics/cursorman.h>
 
 namespace Macs2 {
 
 	View1::View1() : UIElement("View1") {
 		_backgroundSurface = g_engine->_bgImageShip;
+
+		CursorMan.replaceCursor(g_engine->_cursorData, g_engine->_cursorWidth, g_engine->_cursorHeight, g_engine->_cursorWidth >> 1, g_engine->_cursorHeight >>1, 0);
+		CursorMan.showMouse(true);
 	}
 
 	void View1::drawDarkRectangle(uint16 x, uint16 y, uint16 width, uint16 height)
