@@ -110,6 +110,8 @@ public:
 
 	Common::Array<Character *> characters;
 
+	Character *GetCharacterByIndex(uint16_t index);
+
 	View1();
 	virtual ~View1() {}
 
