@@ -1256,8 +1256,22 @@ void Script::ScriptExecutor::ExecuteScript() {
 			c->Position = c->GameObject->Position = Common::Point(x,y);
 			c->GameObject->SceneIndex = sceneID;
 			currentView->characters.push_back(c);
-		}
+		} else if (opcode1 == 0x0d) {
+			// Show a dialogue option
+			uint32_t objectID = Func9F4D_32() - 0x400;
+			uint16_t x = Func9F4D_16();
+			uint16_t y = Func9F4D_16();
+			uint16_t side = Func9F4D_16();
+			uint32_t offset = ReadWord();
+			uint32_t numLines = ReadWord();
 
+			View1 *currentView = (View1 *)_engine->findView("View1");
+
+			Common::Array<Common::String> strings = g_engine->DecodeStrings(Scenes::instance().CurrentSceneStrings, offset, numLines);
+			currentView->ShowSpeechAct(objectID, strings, Common::Point(x, y), side);
+
+			return;
+		}
 		else
 		if (opcode1 == 0x0E) {
 			FuncB6BE();
