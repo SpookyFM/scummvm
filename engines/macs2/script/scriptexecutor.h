@@ -61,6 +61,10 @@ class Macs2Engine;
 			// scene is active
 			bool IsSceneInitRun = false;
 
+			// TODO: Put in a git module
+			Common::String IdentifyScriptOpcode(uint8_t opcode, uint8_t opcode2);
+			Common::String IdentifyHelperOpcode(uint8_t opcode, uint16_t value);
+
 			// [1012h] global - current assumption is that this guards script runs that
 			// are not guarded by the [1014h] global
 			// TODO: I think I had this one right before, the meaning of "is repeated run"
