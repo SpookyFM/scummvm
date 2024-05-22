@@ -24,6 +24,7 @@
 
 #include "common/scummsys.h"
 #include "common/array.h"
+#include "common/str-array.h"
 
 namespace Common {
 	class MemoryReadStream;
@@ -123,6 +124,8 @@ class Macs2Engine;
 
 			// TODO: Identify number of variables and default values
 			Common::Array<ScriptVariable> _variables;
+
+			void SetVariableValue(uint16_t index, uint16_t a, uint16_t b);
 
 			// TODO: Expose in a better place and keep in sync
 			uint16 _charPosX = 276;

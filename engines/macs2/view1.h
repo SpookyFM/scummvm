@@ -177,6 +177,7 @@ public:
 
 	void ShowDialogueChoice(const Common::Array<Common::StringArray> &choices, const Common::Point &position, bool onRightSide = false);
 
+	void TriggerDialogueChoice(uint8_t index);
 
 	uint16_t GetHitObjectID(const Common::Point &pos) const;
 };
