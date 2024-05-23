@@ -2,3 +2,6 @@
 	path = devtools/create_prince
 	url = https://github.com/scummvm/game-translations
 	branch = prince-and-the-coward
+[submodule "engines/macs2/SIS_OpcodeID"]
+	path = engines/macs2/SIS_OpcodeID
+	url = https://github.com/SpookyFM/SIS_OpcodeID.git
