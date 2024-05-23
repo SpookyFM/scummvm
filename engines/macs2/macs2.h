@@ -185,6 +185,15 @@ public:
 
 	void NextCursorMode();
 
+	// Offset 5023h of current scene data
+	// TODO: Consider moving somewhere else
+	Common::Array<uint16_t> array5023;
+
+	// Offset 50D3h - This is used in 0037:10C4 to terminate the loop
+	uint16_t word50D3;
+
+	uint16_t GetInteractedBackgroundHotspot(const Common::Point &p);
+
 
 
 	
