@@ -187,7 +187,9 @@ public:
 
 	// Offset 5023h of current scene data
 	// TODO: Consider moving somewhere else
-	Common::Array<uint16_t> array5023;
+	Common::Array<uint8_t> array5023;
+
+	Common::Array<uint16_t> array50D5;
 
 	// Offset 50D3h - This is used in 0037:10C4 to terminate the loop
 	uint16_t word50D3;
