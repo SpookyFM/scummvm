@@ -9,7 +9,8 @@ MODULE_OBJS = \
 	view1.o \
 	gameobjects.o \
 	adlib.o \
-	script/scriptexecutor.o
+	script/scriptexecutor.o \
+	SIS_OpcodeID/sis_opcode.o
 
 # This module can be built as a plugin
 ifeq ($(ENABLE_MACS2), DYNAMIC_PLUGIN)
