@@ -643,9 +643,9 @@ void Macs2Engine::changeScene(uint32_t newSceneIndex, bool executeScript) {
 	}
 
 	// Continuing with data, even if we don't know all uses yet
-	Common::Array<uint8_t> unknownData1;
-	unknownData1.resize(0x100);
-	_fileStream->read(unknownData1.data(), 0x100);
+	//Common::Array<uint8_t> unknownData1;
+	//unknownData1.resize(0x100);
+	_fileStream->read(_shadingTable, 0x100);
 
 	uint8_t unknownByte1 = _fileStream->readByte();
 	uint8_t unknownByte2 = _fileStream->readByte();
