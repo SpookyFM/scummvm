@@ -802,10 +802,6 @@ uint8_t Character::LookupWalkability(const Common::Point &p) const {
 		return 0x00;
 	}
 	uint32_t value = g_engine->_pathfindingMap.getPixel(p.x, p.y);
-<<<<<<< Updated upstream
-
-	return value < 0xC8;
-=======
 	if (value < 0xC8 || value > 0xEF) {
 		return value;
 	}
@@ -830,7 +826,6 @@ uint8_t Character::LookupWalkability(const Common::Point &p) const {
 bool Character::IsWalkable(const Common::Point &p) const {
 	uint8_t walkability = LookupWalkability(p);
 	return walkability < 0xC8;
->>>>>>> Stashed changes
 }
 
 Common::Point Character::GetPosition() const {
