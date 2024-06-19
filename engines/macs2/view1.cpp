@@ -796,11 +796,41 @@ bool Character::HandleWalkability(Character *c) {
 	return false;
 }
 
-bool Character::IsWalkable(const Common::Point &p) const {
-
+uint8_t Character::LookupWalkability(const Common::Point &p) const {
+	Common::Rect screenRect(320, 200);
+	if (!screenRect.contains(p)) {
+		return 0x00;
+	}
 	uint32_t value = g_engine->_pathfindingMap.getPixel(p.x, p.y);
+<<<<<<< Updated upstream
 
 	return value < 0xC8;
+=======
+	if (value < 0xC8 || value > 0xEF) {
+		return value;
+	}
+
+	// Look up the value in the structure
+	uint16_t lookup = value + ((value << 1) << 1);
+	// TODO: Handle lookup based on byte ptr es:[di+4EA5h]
+	bool lookedUpValue = false;
+	if (value == 0xCD) {
+		// TODO: Hardcoded test case
+		return 0x00;
+	}
+	if (!lookedUpValue) {
+		return 0xFF;
+	} else {
+		// TODO: Look up based on es:[di+4EA6h]
+		uint8_t overrideValue = 0x00;
+		return overrideValue;
+	}
+}
+
+bool Character::IsWalkable(const Common::Point &p) const {
+	uint8_t walkability = LookupWalkability(p);
+	return walkability < 0xC8;
+>>>>>>> Stashed changes
 }
 
 Common::Point Character::GetPosition() const {
