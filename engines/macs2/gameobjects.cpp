@@ -108,3 +108,27 @@ uint16_t Macs2::AnimationReader::readNumAnimations() {
 	uint16_t result = readStream->readUint16();
 	return result;
 }
+
+void Macs2::AnimationReader::SeekToAnimation(uint16_t index) {
+	// Read bp-0Eh directly
+	readStream->seek(0xA, SEEK_SET);
+	// bp-0Eh
+	// TODO: Naming probably off
+	uint16_t firstFrameAdditionalOffset = readStream->readUint16() + 1;
+	// Skip reading bp-24h
+	readStream->seek(0x0B + firstFrameAdditionalOffset + 0x2, SEEK_SET);
+	// TODO: Check for one-off errors
+	for (int i = 0; i < index; i++) {
+		SkipCurrentAnimationFrame();
+	}
+	
+}
+
+void Macs2::AnimationReader::SkipCurrentAnimationFrame() {
+	uint16_t value1 = readStream->readUint16();
+	uint16_t value2 = readStream->readUint16();
+	readStream->seek(2, SEEK_CUR);
+	uint16_t width = readStream->readUint16();
+	uint16_t height = readStream->readUint16();
+	readStream->seek(width * height, SEEK_CUR);
+}
