@@ -86,11 +86,12 @@ View1::View1() : UIElement("View1") {
 	AnimFrame *View1::GetInventoryIcon(GameObject *gameObject) {
 		AnimFrame *result = new AnimFrame();
 		int index = 5 - 1;
-		if (is_in_list<uint16_t, 0x10, 0x11, 0x17, 0x18, 0x1B, 0x22, 0x23, 0x19, 0x1A, 0x14, 0x1C, 0x1D>(gameObject->Index)) {
+		if (is_in_list<uint16_t, 0x10, 0x11, 0x17, 0x18, 0x1B, 0x22, 0x23, 0x19, 0x1A, 0x14, 0x1C, 0x1D, 0x3C>(gameObject->Index)) {
 			// gameObject->Index == 0x23 || gameObject->Index == 0x22) {
 			// TODO Figure out these - the mug has a different blob
 			index = 0x13;
 		}
+		index = 0x13;
 		Common::MemoryReadStream stream(gameObject->Blobs[index].data(), gameObject->Blobs[index].size());
 		// TODO: Need to check how the offset really is calculated by the game code, this will not hold
 		stream.seek(23, SEEK_SET);
@@ -191,11 +192,12 @@ View1::View1() : UIElement("View1") {
 	}
 
 	void View1::drawBackgroundAnimations(Graphics::ManagedSurface &s) {
-		return;
 		for (int i = 0; i < g_engine->_numBackgroundAnimations; i++) {
 			BackgroundAnimation& current = g_engine->_backgroundAnimations[i];
-			AnimFrame &currentFrame = current.Frames[current.FrameIndex];
-			DrawSprite(current.X, current.Y, currentFrame.Width, currentFrame.Height, currentFrame.Data, s);
+			BackgroundAnimationBlob &currentBlob = g_engine->_backgroundAnimationsBlobs[i];
+			// AnimFrame &currentFrame = current.Frames[current.FrameIndex];
+			AnimFrame currentFrame = currentBlob.GetFrame(currentBlob.FrameIndex);
+			DrawSprite(current.X, current.Y, currentFrame.Width, currentFrame.Height, currentFrame.Data, s, false);
 		}
 	}
 
@@ -214,7 +216,7 @@ View1::View1() : UIElement("View1") {
 			GlyphData data;
 			bool found = g_engine->FindGlyph(*iter, data);
 			if (found) {
-				DrawSprite(currentX, currentY, data.Width, data.Height, data.Data, surf);
+				DrawSprite(currentX, currentY, data.Width, data.Height, data.Data, surf, false);
 				currentX += data.Width + 1;
 				// TODO: Add reference to where this is defined
 			} else {
@@ -251,7 +253,7 @@ View1::View1() : UIElement("View1") {
 				currentY += currentData.Height;
 				currentX = x;
 			}
-			DrawSprite(currentX, currentY, currentData.Width, currentData.Height, currentData.Data, s);
+			DrawSprite(currentX, currentY, currentData.Width, currentData.Height, currentData.Data, s, false);
 			currentX += currentData.Width;
 		}
 	}
@@ -434,6 +436,10 @@ bool View1::msgKeypress(const KeypressMessage &msg) {
 	if (msg.ascii == (uint16_t)'c') {
 		g_engine->changeScene(0x6);
 	}
+	if (msg.ascii == (uint16_t)'d') {
+		_backgroundSurface = g_engine->_depthMap;
+		redraw();
+	}
 	if (msg.ascii == (uint16)'m') {
 		// _backgroundSurface = g_engine->_map;
 		_backgroundSurface = g_engine->_pathfindingMap;
@@ -469,6 +475,13 @@ void View1::draw() {
 	Graphics::ManagedSurface s = getSurface();
 
 	s.blitFrom(_backgroundSurface);
+	for (int x = 0; x < s.w; x++) {
+		for (int y = 0; y < s.h; y++) {
+			if (g_engine->_map.getPixel(x, y) == 0x2) {
+				s.setPixel(x, y, 0xFF);
+			}
+		}
+	}
 
 	drawBackgroundAnimations(s);
 	DrawCharacters(s);
@@ -539,7 +552,7 @@ void View1::draw() {
 			// TODO: Improve addressing of the memory
 			AnimFrame *frame = speakingCharacter->GetCurrentPortrait();
 
-			DrawSprite(Common::Point(0xa, 0xa), frame->Width, frame->Height, frame->Data, s);
+			DrawSprite(Common::Point(0xa, 0xa), frame->Width, frame->Height, frame->Data, s, false);
 		}
 	}
 
@@ -558,12 +571,12 @@ void View1::draw() {
 
 	if (activeInventoryItem != nullptr) {
 		AnimFrame *icon = GetInventoryIcon(activeInventoryItem);
-		DrawSprite(0x00, 0x00, icon->Width, icon->Height, icon->Data, s);
+		DrawSprite(0x00, 0x00, icon->Width, icon->Height, icon->Data, s, false);
 	}
 
 	// drawPathfindingPoints(s);
 	// drawPath(s);
-	// drawBackgroundAnimationNumbers(s);
+	drawBackgroundAnimationNumbers(s);
 	
 }
 
@@ -640,7 +653,7 @@ void View1::drawInventory(Graphics::ManagedSurface &s) {
 	int y = 0;
 	for (GameObject *currentItem : inventoryItems) {
 		AnimFrame *icon = GetInventoryIcon(currentItem);
-		DrawSprite(0x36 + x, 0x2c + y, icon->Width, icon->Height, icon->Data, s);
+		DrawSprite(0x36 + x, 0x2c + y, icon->Width, icon->Height, icon->Data, s, false);
 		x += icon->Width;
 	}
 }
@@ -660,24 +673,30 @@ GameObject *View1::getClickedInventoryItem(const Common::Point &p) {
 	return nullptr;
 }
 
-void View1::DrawSprite(int16 x, int16 y, uint16 width, uint16 height, byte* data, Graphics::ManagedSurface& s)
+void View1::DrawSprite(int16 x, int16 y, uint16 width, uint16 height, byte* data, Graphics::ManagedSurface& s, bool mirrored, bool useDepth, uint8_t depth)
 {
 	for (int currentX = 0; currentX < width; currentX++) {
+		int actualX = mirrored ? width - currentX : currentX;
 		for (int currentY = 0; currentY < height; currentY++) {
 			uint8 val = data[currentY * width + currentX];
 			if (val != 0) {
-				int finalX = x + currentX;
+				int finalX = x + actualX;
 				int finalY = y + currentY;
 				if (finalX >= 0 && finalX < s.w && finalY >= 0 && finalY < s.h) {
-					s.setPixel(x + currentX, y + currentY, val);
+					// Check for depth
+					uint8_t bgDepth = g_engine->_depthMap.getPixel(finalX, finalY);
+					// TODO: Check which relation has to hold
+					if (!useDepth || bgDepth < depth) {
+						s.setPixel(x + actualX, y + currentY, val);
+					}
 				}
 			}
 		}
 	}
 }
 
-void View1::DrawSprite(const Common::Point &pos, uint16 width, uint16 height, byte *data, Graphics::ManagedSurface &s) {
-	DrawSprite(pos.x, pos.y, width, height, data, s);
+void View1::DrawSprite(const Common::Point &pos, uint16 width, uint16 height, byte *data, Graphics::ManagedSurface &s, bool mirrored, bool useDepth, uint8_t depth) {
+	DrawSprite(pos.x, pos.y, width, height, data, s, mirrored, useDepth, depth);
 }
 
 void View1::DrawSpriteClipped(uint16 x, uint16 y, Common::Rect &clippingRect, uint16 width, uint16 height, byte *data, Graphics::ManagedSurface &s) {
@@ -753,10 +772,13 @@ void View1::DrawCharacters(Graphics::ManagedSurface &s) {
 			continue;
 		}
 		AnimFrame* frame = current->GetCurrentAnimationFrame();
-		
+		bool mirror = current->isAnimationMirrored();
 		
 		// AnimFrame *frame = current->GetCurrentPortrait();
-		DrawSprite(current->GetPosition() - frame->GetBottomMiddleOffset(), frame->Width, frame->Height, frame->Data, s);
+		uint8_t depth = current->GetPosition().y;
+		DrawSprite(current->GetPosition() - frame->GetBottomMiddleOffset(), frame->Width, frame->Height, frame->Data, s, mirror, true, depth);
+		// Draw the white dot
+		// TODO: Why does it not work for the others apart from the player?
 		Common::Rect screenRect(0, 0, 320, 200);
 		if (screenRect.contains(current->GetPosition())) {
 			s.setPixel(current->GetPosition().x, current->GetPosition().y, 0xFF);
@@ -884,9 +906,37 @@ void Character::SetPosition(const Common::Point &newPosition) {
 	GameObject->Position = newPosition;
 }
 
+bool Character::isAnimationMirrored() const {
+	
+	return is_in_list<uint16_t, 6, 7, 8, 14, 15, 16>(GameObject->Orientation);
+}
+
+uint8_t Character::getMirroredAnimation(uint8_t original) const {
+	switch (original) {
+	case 6:
+		return 4;
+	case 7:
+		return 3;
+	case 8:
+		return 2;
+	case 14:
+		return 12;
+	case 15:
+		return 11;
+	case 16:
+		return 10;
+	}
+}
+
+
+
 Macs2::AnimFrame *Character::GetCurrentAnimationFrame() {
 	// We choose looking towards the screen first
 	int blobIndex = GameObject->Orientation - 1;
+	if (isAnimationMirrored()) {
+		blobIndex = getMirroredAnimation(GameObject->Orientation) - 1;
+		// blobIndex = GameObject->Orientation - 1 -
+	}
 	/* if (IsLerping) {
 		// We are walking
 		blobIndex = GameObject->Orientation + 1;
@@ -957,7 +1007,7 @@ Macs2::AnimFrame *Character::GetCurrentPortrait() {
 	AnimFrame *result = new AnimFrame();
 	Common::MemoryReadStream stream(this->GameObject->Blobs[17].data(), this->GameObject->Blobs[17].size());
 	// TODO: Need to check how the offset really is calculated by the game code, this will not hold
-	if (is_in_list<uint16_t, 2, 4, 6, 0xd, 0xf, 0x12, 0x16>(GameObject->Index)) {
+	if (is_in_list<uint16_t, 2, 4, 6, 0xd, 0xf, 0x12, 0x16, 0x4D>(GameObject->Index)) {
 		// GameObject->Index == 2 || GameObject->Index == 4 || GameObject->Index == 6 || GameObject->Index == 0xd || GameObject ->Index == 0xf) {
 		stream.seek(35, SEEK_SET);
 	} else {

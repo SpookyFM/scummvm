@@ -78,6 +78,14 @@ struct BackgroundAnimation {
 	uint32 FrameIndex;
 };
 
+struct BackgroundAnimationBlob {
+	uint16 X;
+	uint16 Y;
+	Common::Array<uint8_t> Blob;
+	uint32 FrameIndex;
+	AnimFrame GetFrame(uint32_t index);
+};
+
 enum DebugFlag {
 	DEBUG_RLE = 1 << 10,
 	DEBUG_SV = 1 << 11
@@ -120,6 +128,9 @@ public:
 	Graphics::ManagedSurface _map;
 	// Note: This is used both for pathfinding as well as for area IDs
 	Graphics::ManagedSurface _pathfindingMap;
+
+	// This is the depth map
+	Graphics::ManagedSurface _depthMap;
 
 	byte _pal[256 * 3] = { 0 };
 	byte _palVanilla[256 * 3] = { 0 };
@@ -175,6 +186,7 @@ public:
 
 	uint16 _numBackgroundAnimations;
 	BackgroundAnimation *_backgroundAnimations;
+	Common::Array<BackgroundAnimationBlob> _backgroundAnimationsBlobs;
 
 	byte* mapData;
 
