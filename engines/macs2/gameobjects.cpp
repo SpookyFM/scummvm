@@ -85,6 +85,13 @@ Common::MemoryReadStream *Macs2::Scenes::ReadSceneStrings(uint16_t sceneIndex, C
 	// Note: We save the current scene number to [0F86h] - maybe "scene we have strings loaded for"?
 }
 
+Common::Array<uint8_t> Macs2::Scenes::ReadSpecialAnimBlob(uint16_t index, Common::MemoryReadStream *fileStream) {
+	uint16_t offset = CurrentSceneSpecialAnimOffsets[index];
+	fileStream->seek(offset, SEEK_SET);
+	// TODO: Continue here
+	return Common::Array<uint8_t>();
+}
+
 // TODO: Add all to namespace?
 Macs2::GameObject *Macs2::GameObjects::GetProtagonistObject() {
 	return instance().Objects[0];
