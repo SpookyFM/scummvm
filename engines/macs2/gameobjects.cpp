@@ -91,7 +91,7 @@ Common::Array<uint8_t> Macs2::Scenes::ReadSpecialAnimBlob(uint16_t index, Common
 	uint32_t length = fileStream->readUint32LE();
 	Common::Array<uint8_t> result(length);
 	fileStream->read(result.data(), length);
-	return Common::Array<uint8_t>();
+	return result;
 }
 
 // TODO: Add all to namespace?
