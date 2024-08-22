@@ -1286,7 +1286,11 @@ AnimFrame BackgroundAnimationBlob::GetFrame(uint32_t index) {
 	// TODO: Think about proper memory management
 }
 
-	uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bpp6, uint16_t bpp8) {
+uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bpp6, uint16_t bpp8) {
+	uint16_t s = blob.size();
+	if (s == 0x767) {
+		s = 1;
+	}
 	Common::MemorySeekableReadWriteStream stream(blob.data(), blob.size());
 
 
