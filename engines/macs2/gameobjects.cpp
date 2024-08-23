@@ -89,8 +89,9 @@ Common::Array<uint8_t> Macs2::Scenes::ReadSpecialAnimBlob(uint16_t index, Common
 	uint32_t offset = CurrentSceneSpecialAnimOffsets[index - 1];
 	fileStream->seek(offset, SEEK_SET);
 	uint32_t length = fileStream->readUint32LE();
-	// Skip a string
-	fileStream->seek(0x4 + 0xC, SEEK_CUR);
+	// Skip a string - note the original code adds 0x4 for the previously read size since
+	// it does not use the stream position
+	fileStream->seek(0xC, SEEK_CUR);
 	Common::Array<uint8_t> result(length);
 	fileStream->read(result.data(), length);
 	return result;
