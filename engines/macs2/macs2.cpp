@@ -1286,6 +1286,17 @@ AnimFrame BackgroundAnimationBlob::GetFrame(uint32_t index) {
 	// TODO: Think about proper memory management
 }
 
+AnimFrame BackgroundAnimationBlob::GetCurrentFrame() {
+	// TODO: Check the arguments used by the original
+	uint16_t offset = Func1480(Blob, true, 0x2);
+	Common::MemoryReadStream* stream = new Common::MemoryReadStream(Blob.data(), Blob.size());
+	offset += 6;
+	stream->seek(offset);
+	AnimFrame result;
+	result.ReadFromStream(stream);
+	return result;
+}
+
 uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bpp6, uint16_t bpp8) {
 	uint16_t s = blob.size();
 	if (s == 0x767) {
