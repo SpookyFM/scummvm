@@ -1454,7 +1454,10 @@ uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bp
 	les	di,[bp+0Ah]
 	mov	es:[di],ax
 	*/
-	return stream.pos();
+	// TODO: Check what value exactly the original returns,
+	// if we have bp+6h==1, we will mess up our posiition
+	// return stream.pos();
+	return bp12;
 }
 
 
