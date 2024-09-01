@@ -64,7 +64,10 @@ namespace Macs2 {
 		uint32 _nextEventTimer;
 
 		// [2258h] - TODO: Not sure about size - Initialization
-		uint8_t g2258; 
+		uint8_t g2258;
+
+		// [223Eh] - Seems to be a 16 bit value - Initial value?
+		uint16_t g223E;
 
 		// [2296h] - TODO: Initialization
 		uint16_t g2296;
@@ -72,7 +75,16 @@ namespace Macs2 {
 		// [2298h] - TODO: Initialization
 		uint16_t g2298;
 
+		// [225Ah] - TODO: Initial value?
+		uint16_t g225A;
+
 		bool g229A;
+
+		// [229Bh] - seems to contain song byte - TODO: Initial value?
+		uint8_t g229B;
+
+		// Reads a byte without advancing the read stream
+		uint8_t peekByte();
 	
 
 	public:
