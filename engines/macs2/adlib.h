@@ -69,6 +69,9 @@ namespace Macs2 {
 		// [223Eh] - Seems to be a 16 bit value - Initial value?
 		uint16_t g223E;
 
+		// [2291h] - Not sure how used - initialization?
+		uint16_t g2291;
+
 		// [2296h] - TODO: Initialization
 		uint16_t g2296;
 
