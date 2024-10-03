@@ -222,6 +222,9 @@ public:
 
 	Common::Array<uint16_t> array50D5;
 
+	// [51F7h]
+	uint16_t numPathfindingPoints;
+
 	// Offset 50D3h - This is used in 0037:10C4 to terminate the loop
 	uint16_t word50D3;
 
