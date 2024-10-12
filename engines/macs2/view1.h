@@ -54,10 +54,7 @@ private:
 	Common::Point StartPosition;
 	Common::Point EndPosition;
 
-	Common::Array<uint16_t> Path;
-	uint16_t CurrentPathIndex;
 
-	bool IsFollowingPath;
 
 	uint32 StartTime;
 	uint32 Duration;
@@ -82,6 +79,12 @@ private:
 
 
 	public:
+
+
+	Common::Array<uint16_t> Path;
+	int16_t CurrentPathIndex;
+
+	bool IsFollowingPath;
 
 	Common::Point GetPosition() const;
 		void SetPosition(const Common::Point &newPosition);
