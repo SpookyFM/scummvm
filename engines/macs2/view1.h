@@ -85,6 +85,8 @@ private:
 	int16_t CurrentPathIndex;
 	Common::Point PathFinalDestination;
 
+	bool FindPath(Common::Point target);
+
 	bool IsFollowingPath;
 
 	Common::Point GetPosition() const;
