@@ -24,9 +24,6 @@
 #include "macs2/macs2.h"
 #include "macs2/gameobjects.h"
 
-#include <string>
-
-
 namespace Macs2 {
 
 Console::Console() : GUI::Debugger() {
@@ -60,7 +57,7 @@ bool Console::Cmd_dumpBlobs(int argc, const char **argv) {
 		for (int i = 0; i < currentObject->Blobs.size(); i++) {
 			auto currentBlob = currentObject->Blobs[i];
 			df.writeString(Common::String::format("Blob %.2xh\n", i));
-			for (const uint8_t value : currentBlob) {
+			for (const uint8 value : currentBlob) {
 				df.writeString(Common::String::format("%.2x", value));
 			}
 			df.writeString("\n");
@@ -85,7 +82,7 @@ bool Console::Cmd_marker(int argc, const char **argv) {
 bool Console::Cmd_addItem(int argc, const char** argv) {
 	// TODO: Just realizing this - can we have multiple of an item in the inventory?
 	// TODO: Check args count
-	int index = std::stoi(argv[1], nullptr, 16);
+	int index = strtol(argv[1], nullptr, 16);
 	for (GameObject* obj : GameObjects::instance().Objects) {
 		if (obj->Index == index) {
 			obj->SceneIndex = 0x1;
@@ -95,7 +92,7 @@ bool Console::Cmd_addItem(int argc, const char** argv) {
 }
 
 bool Console::Cmd_removeItem(int argc, const char **argv) {
-	int index = std::stoi(argv[1], nullptr, 16);
+	int index = strtol(argv[1], nullptr, 16);
 	for (GameObject* obj : GameObjects::instance().Objects) {
 		if (obj->Index == index) {
 			obj->SceneIndex = 0x0;
@@ -105,9 +102,9 @@ bool Console::Cmd_removeItem(int argc, const char **argv) {
 }
 
 bool Console::Cmd_setOrientation(int argc, const char **argv) {
-	int orientation = std::stoi(argv[1], nullptr, 16);
+	int orientation = strtol(argv[1], nullptr, 16);
 	GameObjects::instance().GetProtagonistObject()->Orientation = orientation;
-	
+
 	return true;
 }
 

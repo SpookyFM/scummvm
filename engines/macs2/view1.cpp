@@ -56,7 +56,7 @@ int View1::FindInventoryItem(GameObject *item) {
 	return -1;
 }
 
-Character *View1::GetCharacterByIndex(uint16_t index) {
+Character *View1::GetCharacterByIndex(uint16 index) {
 	// TODO: Consider a map
 	for (Character *c : characters) {
 		if (c->GameObject->Index == index) {
@@ -86,7 +86,7 @@ View1::View1() : UIElement("View1") {
 	AnimFrame *View1::GetInventoryIcon(GameObject *gameObject) {
 		AnimFrame *result = new AnimFrame();
 		int index = 5 - 1;
-		if (is_in_list<uint16_t, 0x10, 0x11, 0x17, 0x18, 0x1B, 0x22, 0x23, 0x19, 0x1A, 0x14, 0x1C, 0x1D, 0x3C>(gameObject->Index)) {
+		if (is_in_list<uint16, 0x10, 0x11, 0x17, 0x18, 0x1B, 0x22, 0x23, 0x19, 0x1A, 0x14, 0x1C, 0x1D, 0x3C>(gameObject->Index)) {
 			// gameObject->Index == 0x23 || gameObject->Index == 0x22) {
 			// TODO Figure out these - the mug has a different blob
 			index = 0x13;
@@ -326,7 +326,7 @@ View1::View1() : UIElement("View1") {
 				Common::String number = Common::String::format("%u", i);
 				renderString(current.Position.x - xData.Width * 0.5 + 10, current.Position.y - xData.Height * 0.5 + 10, number.c_str());
 
-				for (uint8_t adjacentIndex : current.adjacentPoints) {
+				for (uint8 adjacentIndex : current.adjacentPoints) {
 					if (adjacentIndex >= g_engine->pathfindingPoints.size()) {
 						continue;
 					}
@@ -338,10 +338,10 @@ View1::View1() : UIElement("View1") {
 		}
 
 		// Draw the test results
-		Common::Array<uint8_t> &overlay = characters[0]->PathfindingOverlay;
+		Common::Array<uint8> &overlay = characters[0]->PathfindingOverlay;
 		for (int y = 0; y < 200; y++) {
 			for (int x = 0; x < 320; x++) {
-				const uint8_t currentValue = overlay[y * 320 + x];
+				const uint8 currentValue = overlay[y * 320 + x];
 				if (currentValue != 0) {
 					s.setPixel(x, y, currentValue);
 				}
@@ -350,9 +350,9 @@ View1::View1() : UIElement("View1") {
 	}
 
 	void View1::drawDebugOutput(Graphics::ManagedSurface &s) {
-		uint16_t x = 0;
-		uint16_t y = 0;
-		constexpr uint16_t deltaY = 20;
+		uint16 x = 0;
+		uint16 y = 0;
+		constexpr uint16 deltaY = 20;
 		for (const Common::String &current : g_engine->debugOutput) {
 			renderString(x, y, current);
 			y += deltaY;
@@ -466,7 +466,7 @@ View1::View1() : UIElement("View1") {
 			}
 
 			// Check if we hit something
-			uint16_t index = GetHitObjectID(Common::Point(msg._pos.x, msg._pos.y));
+			uint16 index = GetHitObjectID(Common::Point(msg._pos.x, msg._pos.y));
 			if (index == 0) {
 				// TODO: Check which we should test first in practice, objects or background
 				index = g_engine->GetInteractedBackgroundHotspot(msg._pos);
@@ -507,7 +507,7 @@ View1::View1() : UIElement("View1") {
 
 	bool View1::msgMouseMove(const MouseMoveMessage &msg) {
 		// TODO: Check what we are hovering over and save this info
-		uint16_t areaID = g_engine->_scriptExecutor->Func101D(msg._pos.x, msg._pos.y);
+		uint16 areaID = g_engine->_scriptExecutor->Func101D(msg._pos.x, msg._pos.y);
 		// g_system->setWindowCaption(Common::String::format("Area ID: %.4x", areaID));
 		return true;
 	}
@@ -515,7 +515,7 @@ View1::View1() : UIElement("View1") {
 bool View1::msgKeypress(const KeypressMessage &msg) {
 	// Any keypress to close the view
 	// close();
-	if (msg.ascii == (uint16_t)'t') {
+	if (msg.ascii == (uint16)'t') {
 		if (_isShowingInventory && activeInventoryItem != nullptr) {
 			if (inventorySource->Index == 1) {
 				// TODO: Need to handle this case, the game can figure out that there is a container
@@ -526,10 +526,10 @@ bool View1::msgKeypress(const KeypressMessage &msg) {
 			}
 		}
 	}
-	if (msg.ascii == (uint16_t)'c') {
+	if (msg.ascii == (uint16)'c') {
 		g_engine->changeScene(0x6);
 	}
-	if (msg.ascii == (uint16_t)'d') {
+	if (msg.ascii == (uint16)'d') {
 		_backgroundSurface = g_engine->_depthMap;
 		redraw();
 	}
@@ -554,7 +554,7 @@ bool View1::msgKeypress(const KeypressMessage &msg) {
 		_isShowingInventory = !_isShowingInventory;
 	} else if (msg.ascii >= '1' && msg.ascii <= '9') {
 		// Register a dialogue choice and act upon it
-		uint8_t numberPressed = msg.ascii - '1' + 1;
+		uint8 numberPressed = msg.ascii - '1' + 1;
 		TriggerDialogueChoice(numberPressed);
 	} else if (msg.ascii == 'p') {
 
@@ -804,7 +804,7 @@ GameObject *View1::getClickedInventoryItem(const Common::Point &p) {
 	return nullptr;
 }
 
-void View1::DrawSprite(int16 x, int16 y, uint16 width, uint16 height, byte* data, Graphics::ManagedSurface& s, bool mirrored, bool useDepth, uint8_t depth)
+void View1::DrawSprite(int16 x, int16 y, uint16 width, uint16 height, byte* data, Graphics::ManagedSurface& s, bool mirrored, bool useDepth, uint8 depth)
 {
 	for (int currentX = 0; currentX < width; currentX++) {
 		int actualX = mirrored ? width - currentX : currentX;
@@ -815,7 +815,7 @@ void View1::DrawSprite(int16 x, int16 y, uint16 width, uint16 height, byte* data
 				int finalY = y + currentY;
 				if (finalX >= 0 && finalX < s.w && finalY >= 0 && finalY < s.h) {
 					// Check for depth
-					uint8_t bgDepth = g_engine->_depthMap.getPixel(finalX, finalY);
+					uint8 bgDepth = g_engine->_depthMap.getPixel(finalX, finalY);
 					// TODO: Check which relation has to hold
 					if (!useDepth || bgDepth < depth) {
 						s.setPixel(x + actualX, y + currentY, val);
@@ -826,7 +826,7 @@ void View1::DrawSprite(int16 x, int16 y, uint16 width, uint16 height, byte* data
 	}
 }
 
-void View1::DrawSprite(const Common::Point &pos, uint16 width, uint16 height, byte *data, Graphics::ManagedSurface &s, bool mirrored, bool useDepth, uint8_t depth) {
+void View1::DrawSprite(const Common::Point &pos, uint16 width, uint16 height, byte *data, Graphics::ManagedSurface &s, bool mirrored, bool useDepth, uint8 depth) {
 	DrawSprite(pos.x, pos.y, width, height, data, s, mirrored, useDepth, depth);
 }
 
@@ -904,15 +904,15 @@ void View1::DrawCharacters(Graphics::ManagedSurface &s) {
 		// TODO: I'm kind of guessing that nr. 10 also is not visible, it does not appear
 		// to have a lot of data to it. Random guess maybe this is the cup which is static?
 		// TODO: Check what objects 17 and 18 and 23 in the machine room scene might be
-		if (is_in_list<uint16_t, 0x50, 0x17, 0x18, 0x23>(index)) { // || index == 0x10) {
+		if (is_in_list<uint16, 0x50, 0x17, 0x18, 0x23>(index)) { // || index == 0x10) {
 			continue;
 		}
 		AnimFrame* frame = current->GetCurrentAnimationFrame();
 		bool mirror = current->isAnimationMirrored();
 		
 		// AnimFrame *frame = current->GetCurrentPortrait();
-		uint8_t depth = current->GetPosition().y;
-		uint8_t bgDepth = g_engine->_depthMap.getPixel(current->GetPosition().x, current->GetPosition().y);
+		uint8 depth = current->GetPosition().y;
+		uint8 bgDepth = g_engine->_depthMap.getPixel(current->GetPosition().x, current->GetPosition().y);
 		g_system->setWindowCaption(Common::String::format("Depth %u vs. %u", depth, bgDepth));
 
 		DrawSprite(current->GetPosition() - frame->GetBottomMiddleOffset(), frame->Width, frame->Height, frame->Data, s, mirror, true, depth);
@@ -926,7 +926,7 @@ void View1::DrawCharacters(Graphics::ManagedSurface &s) {
 	}
 }
 
-void View1::ShowSpeechAct(uint16_t characterIndex, const Common::Array<Common::String> &strings, const Common::Point &position, bool onRightSide) {
+void View1::ShowSpeechAct(uint16 characterIndex, const Common::Array<Common::String> &strings, const Common::Point &position, bool onRightSide) {
 	 
 	
 	setStringBox(strings);
@@ -988,8 +988,8 @@ void View1::DrawBorderSide(const Common::Point &pos, const Common::Point &size, 
 	// TODO: Should check which texture we actually use at the moment
 
 	// TODO: Check which area we actually fill
-	uint16_t currentX = clippingRect.left;
-	uint16_t currentY = clippingRect.top;
+	uint16 currentX = clippingRect.left;
+	uint16 currentY = clippingRect.top;
 	const Sprite &sprite = g_engine->_borderSprite;
 
 	while (currentY < clippingRect.bottom) {
@@ -1002,7 +1002,7 @@ void View1::DrawBorderSide(const Common::Point &pos, const Common::Point &size, 
 	}
 }
 
-void View1::DrawHorizontalBorderHighlight(const Common::Point &pos, int16 width, uint8_t unknown, Graphics::ManagedSurface &s) {
+void View1::DrawHorizontalBorderHighlight(const Common::Point &pos, int16 width, uint8 unknown, Graphics::ManagedSurface &s) {
 
 	// 0037:3AF5 (in fn0037_3AD4)
 
@@ -1012,8 +1012,8 @@ void View1::DrawHorizontalBorderHighlight(const Common::Point &pos, int16 width,
 	// TODO: Should check which texture we actually use at the moment
 
 	// TODO: Check which area we actually fill
-	uint16_t currentX = clippingRect.left;
-	uint16_t currentY = clippingRect.top;
+	uint16 currentX = clippingRect.left;
+	uint16 currentY = clippingRect.top;
 	const Sprite &sprite = g_engine->_borderSprite;
 
 	while (currentX < clippingRect.right) {
@@ -1033,7 +1033,7 @@ void View1::ShowDialogueChoice(const Common::Array<Common::StringArray> &choices
 	ShowSpeechAct(1, joinedLines, position, onRightSide);
 }
 
-void View1::TriggerDialogueChoice(uint8_t index) {
+void View1::TriggerDialogueChoice(uint8 index) {
 	// TODO: Confirm that these two are really set accordingly
 	g_engine->_scriptExecutor->SetVariableValue(0x0d, index, 0);
 	g_engine->_scriptExecutor->chosenDialogueOption = index;
@@ -1047,7 +1047,7 @@ void View1::TriggerDialogueChoice(uint8_t index) {
 	g_engine->RunScriptExecutor();
 }
 
-uint16_t View1::GetHitObjectID(const Common::Point& pos) const {
+uint16 View1::GetHitObjectID(const Common::Point& pos) const {
 	// TODO: Naive implementation for now
 	for (auto currentCharacter : characters) {
 		auto animFrame = currentCharacter->GetCurrentAnimationFrame();
@@ -1097,18 +1097,18 @@ bool Character::HandleWalkability(Character *c) {
 	return false;
 }
 
-uint8_t Character::LookupWalkability(const Common::Point &p) const {
+uint8 Character::LookupWalkability(const Common::Point &p) const {
 	Common::Rect screenRect(320, 200);
 	if (!screenRect.contains(p)) {
 		return 0x00;
 	}
-	uint32_t value = g_engine->_pathfindingMap.getPixel(p.x, p.y);
+	uint32 value = g_engine->_pathfindingMap.getPixel(p.x, p.y);
 	if (value < 0xC8 || value > 0xEF) {
 		return value;
 	}
 
 	// Look up the value in the structure
-	uint16_t lookup = value + ((value << 1) << 1);
+	uint16 lookup = value + ((value << 1) << 1);
 	// TODO: Handle lookup based on byte ptr es:[di+4EA5h]
 	bool lookedUpValue = false;
 	if (value == 0xCD) {
@@ -1124,13 +1124,13 @@ uint8_t Character::LookupWalkability(const Common::Point &p) const {
 		return 0xFF;
 	} else {
 		// TODO: Look up based on es:[di+4EA6h]
-		uint8_t overrideValue = 0x00;
+		uint8 overrideValue = 0x00;
 		return overrideValue;
 	}
 }
 
 bool Character::IsWalkable(const Common::Point &p) const {
-	uint8_t walkability = LookupWalkability(p);
+	uint8 walkability = LookupWalkability(p);
 	return walkability < 0xC8;
 }
 
@@ -1176,7 +1176,7 @@ bool Character::IsLineSegmentWalkable(const Common::Point &p1, const Common::Poi
 }
 
 Character::Character() {
-	PathfindingOverlay = Common::Array<uint8_t>(320 * 200, 0);
+	PathfindingOverlay = Common::Array<uint8>(320 * 200, 0);
 }
 
 bool Character::FindPath(Common::Point target) {
@@ -1186,7 +1186,7 @@ bool Character::FindPath(Common::Point target) {
 	// If not: Do a recusrive search using the other points
 
 	// TODO: Assume we have to use the net, usually we would do a path trace
-	constexpr uint16_t numPoints = 16;
+	constexpr uint16 numPoints = 16;
 	uint minLength = std::numeric_limits<uint>::max();
 	int minIndex = -1;
 	const Common::Point &charPosition = GameObjects::instance().GetProtagonistObject()->Position;
@@ -1223,7 +1223,7 @@ bool Character::FindPath(Common::Point target) {
 	// return true;
 }
 
-bool Character::VisitPathfindingNode(uint16_t index, Common::Array<bool> &visited, const Common::Point &target) {
+bool Character::VisitPathfindingNode(uint16 index, Common::Array<bool> &visited, const Common::Point &target) {
 	if (visited[index] == true) {
 		// We have visited this node before
 		return false;
@@ -1242,7 +1242,7 @@ bool Character::VisitPathfindingNode(uint16_t index, Common::Array<bool> &visite
 
 	// See if the adjacent points are good
 	for (int i = 0; i < currentPoint.adjacentPoints.size(); i++) {
-		const uint16_t currentAdjacentIndex = currentPoint.adjacentPoints[i];
+		const uint16 currentAdjacentIndex = currentPoint.adjacentPoints[i];
 		if (VisitPathfindingNode(currentAdjacentIndex - 1, visited, target)) {
 			const PathfindingPoint &adjacentPoint = g_engine->pathfindingPoints[currentAdjacentIndex - 1];
 			IsLineSegmentWalkable(currentPoint.Position, adjacentPoint.Position, true);
@@ -1273,7 +1273,7 @@ bool Character::TryFollowPath() {
 	if (CurrentPathIndex == Path.size() + 1) {
 		return false;
 	}
-	const uint16_t currentPathPointIndex = Path[CurrentPathIndex]; // -1;
+	const uint16 currentPathPointIndex = Path[CurrentPathIndex]; // -1;
 	// Set up a lerp
 	Common::String output = Common::String::format("%u - %u", CurrentPathIndex, currentPathPointIndex);
 	g_engine->debugOutput.push_back(output);
@@ -1284,10 +1284,10 @@ bool Character::TryFollowPath() {
 
 bool Character::isAnimationMirrored() const {
 	
-	return is_in_list<uint16_t, 6, 7, 8, 14, 15, 16>(GameObject->Orientation);
+	return is_in_list<uint16, 6, 7, 8, 14, 15, 16>(GameObject->Orientation);
 }
 
-uint8_t Character::getMirroredAnimation(uint8_t original) const {
+uint8 Character::getMirroredAnimation(uint8 original) const {
 	switch (original) {
 	case 6:
 		return 4;
@@ -1357,12 +1357,12 @@ Macs2::AnimFrame *Character::GetCurrentAnimationFrame() {
 
 	// Old code from before 1480 implementation here
 	/* AnimationReader testReader(this->GameObject->Blobs[blobIndex]);
-	uint16_t numAnimations = testReader.readNumAnimations();
+	uint16 numAnimations = testReader.readNumAnimations();
 	debug("Number of animation frames: %.4", numAnimations);
 
 	Common::MemoryReadStream stream(this->GameObject->Blobs[blobIndex].data(), this->GameObject->Blobs[blobIndex].size());
 	stream.seek(0xA, SEEK_SET);
-	uint16_t offset = stream.readUint16LE();
+	uint16 offset = stream.readUint16LE();
 	offset += 0x8;
 	stream.seek(offset, SEEK_CUR);
 
@@ -1377,7 +1377,7 @@ Macs2::AnimFrame *Character::GetCurrentAnimationFrame() {
 	// Skip ahead to the width and height
 	testReader.readStream->seek(6, SEEK_CUR
 	*/
-	uint16_t offset = BackgroundAnimationBlob::Func1480(GameObject->Blobs[blobIndex],false, 0x0);
+	uint16 offset = BackgroundAnimationBlob::Func1480(GameObject->Blobs[blobIndex],false, 0x0);
 	// My remaining code expects to get dialed to the width and height directly - TODO make uniform
 	offset += 6;
 	AnimFrame *result = new AnimFrame();
@@ -1389,7 +1389,7 @@ Macs2::AnimFrame *Character::GetCurrentAnimationFrame() {
 }
 
 Macs2::AnimFrame *Character::GetCurrentPortrait() {
-	uint16_t offset = BackgroundAnimationBlob::Func1480(GameObject->Blobs[17], true, 2);
+	uint16 offset = BackgroundAnimationBlob::Func1480(GameObject->Blobs[17], true, 2);
 	// My remaining code expects to get dialed to the width and height directly - TODO make uniform
 	offset += 6;
 	AnimFrame *result = new AnimFrame();
@@ -1403,7 +1403,7 @@ Macs2::AnimFrame *Character::GetCurrentPortrait() {
 	/* AnimFrame *result = new AnimFrame();
 	Common::MemoryReadStream stream(this->GameObject->Blobs[17].data(), this->GameObject->Blobs[17].size());
 	// TODO: Need to check how the offset really is calculated by the game code, this will not hold
-	if (is_in_list<uint16_t, 2, 4, 6, 0xd, 0xf, 0x12, 0x16, 0x4D>(GameObject->Index)) {
+	if (is_in_list<uint16, 2, 4, 6, 0xd, 0xf, 0x12, 0x16, 0x4D>(GameObject->Index)) {
 		// GameObject->Index == 2 || GameObject->Index == 4 || GameObject->Index == 6 || GameObject->Index == 0xd || GameObject ->Index == 0xf) {
 		stream.seek(35, SEEK_SET);
 	} else {
@@ -1442,7 +1442,7 @@ void Character::StartLerpTo(const Common::Point &target, uint32 duration, bool i
 	if (degreesAdjusted > 360.0f) {
 		degreesAdjusted -= 360.0f;
 	}
-	uint8_t segment = degreesAdjusted / (360.0f / 8.0f);
+	uint8 segment = degreesAdjusted / (360.0f / 8.0f);
 	// TODO: Try out first which values we get
 	Common::String message = Common::String::format("Degrees: %f Segment: %u", degrees, segment);
 	debug(message.c_str());

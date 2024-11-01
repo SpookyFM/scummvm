@@ -81,17 +81,17 @@ struct BackgroundAnimation {
 struct BackgroundAnimationBlob {
 	uint16 X;
 	uint16 Y;
-	Common::Array<uint8_t> Blob;
+	Common::Array<uint8> Blob;
 	uint32 FrameIndex;
-	AnimFrame GetFrame(uint32_t index);
+	AnimFrame GetFrame(uint32 index);
 	AnimFrame GetCurrentFrame();
-	static uint16_t Func1480(Common::Array<uint8_t>& blob, bool bpp6, uint16_t bpp8);
+	static uint16 Func1480(Common::Array<uint8>& blob, bool bpp6, uint16 bpp8);
 };
 
 struct Sprite {
-	uint16_t Width;
-	uint16_t Height;
-	Common::Array<uint8_t> Data;
+	uint16 Width;
+	uint16 Height;
+	Common::Array<uint8> Data;
 };
 
 enum DebugFlag {
@@ -100,9 +100,9 @@ enum DebugFlag {
 };
 
 struct PathfindingPoint {
-	uint8_t Index;
+	uint8 Index;
 	Common::Point Position;
-	Common::Array<uint8_t> adjacentPoints;
+	Common::Array<uint8> adjacentPoints;
 };
 
 class Macs2Engine : public Engine, public Events {
@@ -135,7 +135,7 @@ public:
 	Macs2Engine(OSystem *syst, const ADGameDescription *gameDesc);
 	~Macs2Engine() override;
 
-	void changeScene(uint32_t newSceneIndex, bool executeScript = true);
+	void changeScene(uint32 newSceneIndex, bool executeScript = true);
 
 	Script::ScriptExecutor *_scriptExecutor;
 	struct Graphics::ManagedSurface _bgImageShip;
@@ -220,17 +220,17 @@ public:
 
 	// Offset 5023h of current scene data
 	// TODO: Consider moving somewhere else
-	Common::Array<uint8_t> array5023;
+	Common::Array<uint8> array5023;
 
-	Common::Array<uint16_t> array50D5;
+	Common::Array<uint16> array50D5;
 
 	// [51F7h]
-	uint16_t numPathfindingPoints;
+	uint16 numPathfindingPoints;
 
 	// Offset 50D3h - This is used in 0037:10C4 to terminate the loop
-	uint16_t word50D3;
+	uint16 word50D3;
 
-	uint16_t GetInteractedBackgroundHotspot(const Common::Point &p);
+	uint16 GetInteractedBackgroundHotspot(const Common::Point &p);
 
 
 
@@ -251,7 +251,7 @@ public:
 	// Schedules a run of the script the next time the executor is ticked
 	void ScheduleRun(bool initScene = false);
 
-	uint16_t Func0E8C(const Common::Point &p);
+	uint16 Func0E8C(const Common::Point &p);
 
 	int MeasureString(Common::String &s);
 

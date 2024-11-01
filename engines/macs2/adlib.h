@@ -65,53 +65,53 @@ namespace Macs2 {
 		uint32 _nextEventTimer;
 
 		// [2258h] - TODO: Not sure about size - Initialization
-		uint8_t g2258;
+		uint8 g2258;
 
 		// [223Eh] - Seems to be a 16 bit value - Initial value?
-		uint16_t g223E;
+		uint16 g223E;
 
 		// [2291h] - Not sure how used - initialization?
-		uint16_t g2291;
+		uint16 g2291;
 
 		// [2296h] - TODO: Initialization
-		uint16_t g2296;
+		uint16 g2296;
 
 		// [2298h] - TODO: Initialization
-		uint16_t g2298;
+		uint16 g2298;
 
 		// [225Ah] - TODO: Initial value?
-		uint16_t g225A;
+		uint16 g225A;
 
 		// Array at [222Ch] - accessed with byte values
 		// TODO: Initialization, access pattern
-		Common::Array<uint8_t> gArray222C;
+		Common::Array<uint8> gArray222C;
 
 		// Array at [225Fh] - accessed with byte values
 		// TODO: Initialization, access pattern
-		Common::Array<uint8_t> gArray225F;
+		Common::Array<uint8> gArray225F;
 
 		// Array at [227Fh] - accessed with byte values
 		// TODO: Initialization, access pattern, size
-		Common::Array<uint8_t> gArray227F;
+		Common::Array<uint8> gArray227F;
 
 		// Array at [2288h] - accessed with byte values
 		// TODO: Initialization, access pattern, size
-		Common::Array<uint8_t> gArray2288;
+		Common::Array<uint8> gArray2288;
 
 		// Array at [2235h] - accessed with bytes values
 		// TODO: Initialization, access pattern, size
-		Common::Array<uint8_t> gArray2235;
+		Common::Array<uint8> gArray2235;
 
 		bool g229A;
 
 		// [229Bh] - seems to contain song byte - TODO: Initial value?
-		uint8_t g229B;
+		uint8 g229B;
 
 		// Reads a byte without advancing the read stream
-		uint8_t peekByte();
+		uint8 peekByte();
 
 		// Reads a byte from the specified offset without changing the position in the stream
-		uint8_t peekByteAt(uint16_t offset);
+		uint8 peekByteAt(uint16 offset);
 	
 
 	public:

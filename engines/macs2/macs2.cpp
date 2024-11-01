@@ -109,8 +109,8 @@ int previewNumFrames(int64 offs, Common::File& file) {
 	while (numBytes > 0) {
 		file.seek(6, SEEK_CUR);
 		numBytes -= 6;
-		uint16_t x = file.readUint16LE();
-		uint16_t y = file.readUint16LE();
+		uint16 x = file.readUint16LE();
+		uint16 y = file.readUint16LE();
 		file.seek(x * y, SEEK_CUR);
 		numBytes -= 4 + 4 + x * y;
 		numFrames++;
@@ -139,7 +139,7 @@ void Macs2Engine::readResourceFile() {
 	// We need to skip reading the 776h global which comes first
 	_fileStream->seek(0xC + 0x2, SEEK_SET);
 
-	uint16_t firstSceneIndex = _fileStream->readUint16LE();
+	uint16 firstSceneIndex = _fileStream->readUint16LE();
 	Scenes::instance().CurrentSceneIndex = firstSceneIndex;
 	Scenes::instance().CurrentSceneScript = Scenes::instance().ReadSceneScript(firstSceneIndex, _fileStream);
 	Scenes::instance().CurrentSceneStrings = Scenes::instance().ReadSceneStrings(firstSceneIndex, _fileStream);
@@ -164,11 +164,11 @@ void Macs2Engine::readResourceFile() {
 		gameObject->Index = i;
 
 		// This loading happens around the l0037_082D: mark
-		uint16_t x = _fileStream->readUint16LE();
-		uint16_t y = _fileStream->readUint16LE();
-		uint16_t sceneIndex = _fileStream->readUint16LE();
-		uint16_t orientation = _fileStream->readUint16LE();
-		uint16_t unknown = _fileStream->readUint16LE();
+		uint16 x = _fileStream->readUint16LE();
+		uint16 y = _fileStream->readUint16LE();
+		uint16 sceneIndex = _fileStream->readUint16LE();
+		uint16 orientation = _fileStream->readUint16LE();
+		uint16 unknown = _fileStream->readUint16LE();
 		gameObject->Position = Common::Point(x, y);
 		gameObject->SceneIndex = sceneIndex;
 		gameObject->Orientation = orientation;
@@ -177,13 +177,13 @@ void Macs2Engine::readResourceFile() {
 		for (int j = 1; j < 0x15; j++) {
 			// We're at l0037_0A3E here
 			// TODO: Compare places and read values with the game
-			uint16_t unknown1 = _fileStream->readUint16LE();
-			uint16_t unknown2 = _fileStream->readUint16LE();
-			uint32_t dataSize = _fileStream->readUint32LE();
-			uint8_t *data = new uint8_t[dataSize];
+			uint16 unknown1 = _fileStream->readUint16LE();
+			uint16 unknown2 = _fileStream->readUint16LE();
+			uint32 dataSize = _fileStream->readUint32LE();
+			uint8 *data = new uint8[dataSize];
 			_fileStream->read(data, dataSize);
 			// TODO: Place this data in the game object and create the game object
-			gameObject->Blobs.push_back(Common::Array<uint8_t>(data, dataSize));
+			gameObject->Blobs.push_back(Common::Array<uint8>(data, dataSize));
 			// Seek forward for the next 2+1+1 bytes reads
 			_fileStream->seek(0x4, SEEK_CUR);
 		}
@@ -200,7 +200,7 @@ void Macs2Engine::readResourceFile() {
 		_fileStream->seek(objectOffset, SEEK_SET);
 		// TODO: We read 80h bytes - to check where these are used - script variables?
 		_fileStream->seek(0x80, SEEK_CUR);
-		uint16_t scriptLength = _fileStream->readUint16LE();
+		uint16 scriptLength = _fileStream->readUint16LE();
 		gameObject->Script.resize(scriptLength);
 		_fileStream->read(gameObject->Script.data(), scriptLength);
 
@@ -280,7 +280,7 @@ void Macs2Engine::readResourceFile() {
 		current.Position.x = _fileStream->readUint16LE();
 		current.Position.y = _fileStream->readUint16LE();
 		_fileStream->seek(4, SEEK_CUR);
-		uint16_t numConnections = _fileStream->readUint16LE();
+		uint16 numConnections = _fileStream->readUint16LE();
 		_fileStream->seek(-6, SEEK_CUR);
 		for (int j = 0; j < numConnections; j++) {
 			current.adjacentPoints.push_back(_fileStream->readByte());
@@ -294,18 +294,18 @@ void Macs2Engine::readResourceFile() {
 		_pathfindingPoints[i*2 + 1] = _fileStream->readUint16LE();
 		// Need to read 6 more bytes of unknown purpose
 		// TODO: Add them when I know what they do
-		Common::Array<uint8_t> indices;
+		Common::Array<uint8> indices;
 
 		for (int j = 0; j < 4; j++) {
 			indices.push_back(_fileStream->readByte());
 		}
-		uint16_t numConnections = _fileStream->readUint16LE();
+		uint16 numConnections = _fileStream->readUint16LE();
 	}
 	
 
 	
 
-	// return check_cast<uint8_t>((c * 259 + 33) >> 6);
+	// return check_cast<uint8>((c * 259 + 33) >> 6);
 
 	// Iterate over 0 to 199 for each row
 	// Load the amount of bytes for the row
@@ -349,7 +349,7 @@ void Macs2Engine::readResourceFile() {
 	_fileStream->read(_borderData, _borderWidth * _borderHeight);
 	_borderSprite.Width = _borderWidth;
 	_borderSprite.Height = _borderHeight;
-	_borderSprite.Data = Common::Array<uint8_t>(_borderData, _borderWidth * _borderHeight);
+	_borderSprite.Data = Common::Array<uint8>(_borderData, _borderWidth * _borderHeight);
 
 	// And the highlight part
 	_fileStream->seek(0x6962);
@@ -536,14 +536,14 @@ Macs2Engine::~Macs2Engine() {
 
 }
 
-void Macs2Engine::changeScene(uint32_t newSceneIndex, bool executeScript) {
+void Macs2Engine::changeScene(uint32 newSceneIndex, bool executeScript) {
 	// TODO: Release old resources
 
 	// Background image
 	// [0752h] is pointing to 3000h bytes data starting at Ch + 4h in the file
 	// Addressing the background image starts at l0037_25A9
 	_fileStream->seek(0xC + 0x4 + 0xC * newSceneIndex - 0xC, SEEK_SET);
-	uint32_t bgImageOffset = _fileStream->readUint32LE();
+	uint32 bgImageOffset = _fileStream->readUint32LE();
 	_fileStream->seek(bgImageOffset, SEEK_SET);
 
 	// TODO: Copy-pasted code here
@@ -586,7 +586,7 @@ void Macs2Engine::changeScene(uint32_t newSceneIndex, bool executeScript) {
 	}
 
 	// We load the palette right afterwards - 0x300 is exactly 3 * 256d
-	Common::Array<uint8_t> palette;
+	Common::Array<uint8> palette;
 	palette.resize(0x300);
 	_fileStream->read(palette.data(), 0x300);
 
@@ -601,13 +601,13 @@ void Macs2Engine::changeScene(uint32_t newSceneIndex, bool executeScript) {
 	}
 
 	// Continuing with data, even if we don't know all uses yet
-	//Common::Array<uint8_t> unknownData1;
+	//Common::Array<uint8> unknownData1;
 	//unknownData1.resize(0x100);
 	_fileStream->read(_shadingTable, 0x100);
 
-	uint8_t unknownByte1 = _fileStream->readByte();
-	uint8_t unknownByte2 = _fileStream->readByte();
-	uint8_t unknownByte3 = _fileStream->readByte();
+	uint8 unknownByte1 = _fileStream->readByte();
+	uint8 unknownByte2 = _fileStream->readByte();
+	uint8 unknownByte3 = _fileStream->readByte();
 
 	// Offset 1013h
 	Graphics::ManagedSurface unknownRLE1 = readRLEImage(_fileStream->pos(), _fileStream);
@@ -1009,32 +1009,32 @@ void Macs2Engine::NextCursorMode() {
 	}
 }
 
-uint16_t Macs2Engine::GetInteractedBackgroundHotspot(const Common::Point &p) {
-	uint16_t result = 0;
+uint16 Macs2Engine::GetInteractedBackgroundHotspot(const Common::Point &p) {
+	uint16 result = 0;
 	// TODO: Abstract the screen sizes
 	if (p.x < 0 || p.x > 320 || p.y < 0 || p.y > 200) {
 		return result;
 	}
 
 	// [bp-8h]
-	uint8_t firstLookup = _map.getPixel(p.x, p.y);
+	uint8 firstLookup = _map.getPixel(p.x, p.y);
 	// [bp-10h] - Guess is that this is the number of hotspots
 	// TODO: Actually load from file
-	uint16_t numHotspots = word50D3;
+	uint16 numHotspots = word50D3;
 
-	uint8_t i = 1;
+	uint8 i = 1;
 	if (i > numHotspots) {
 		return result;
 	}
 
 	// TODO: need to load from the file, and need to change to words
-	Common::Array<uint16_t> a = array50D5;
+	Common::Array<uint16> a = array50D5;
 
 	// TODO: Handle loop properly
 	do {
 		// TODO: Not sure if this should be a byte or a word
 		// TODO: To check if it's important that we clear the first half of the word
-		uint16_t lookup = a[i-1];
+		uint16 lookup = a[i-1];
 		if (lookup == firstLookup) {
 			// TODO: Add the 5BD1h lookup part
 			// This would check for a value other than FFh in that array
@@ -1053,14 +1053,14 @@ void Macs2Engine::ScheduleRun(bool initScene) {
 	scheduledRunIsInitScene = initScene;
 }
 
-uint16_t Macs2Engine::Func0E8C(const Common::Point &p) {
+uint16 Macs2Engine::Func0E8C(const Common::Point &p) {
 	// TODO: Check against screen extent
-	uint8_t value = _pathfindingMap.getPixel(p.x, p.y);
+	uint8 value = _pathfindingMap.getPixel(p.x, p.y);
 	if (value < 0xC8 || value > 0xEF) {
 		return value;
 	}
 
-	uint16_t lookupIndex = value;
+	uint16 lookupIndex = value;
 	lookupIndex << 1;
 	lookupIndex << 1;
 	lookupIndex += value;
@@ -1171,7 +1171,7 @@ Common::Error Macs2Engine::syncGame(Common::Serializer &s) {
 
 
 	// Sync script variables
-	int32_t numVariables = _scriptExecutor->_variables.size();
+	int32 numVariables = _scriptExecutor->_variables.size();
 	// TODO: Assuming that this array will always be the same size
 	for (int i = 0; i < numVariables; i++) {
 		s.syncAsUint16LE(_scriptExecutor->_variables[i].a);
@@ -1181,7 +1181,7 @@ Common::Error Macs2Engine::syncGame(Common::Serializer &s) {
 	// Iterate over objects
 	// Iterate over characters?
 	// TODO: Why save the indices? Would only make sense if we saved other data as well
-	uint32_t numObjects = GameObjects::instance().Objects.size();
+	uint32 numObjects = GameObjects::instance().Objects.size();
 	for (auto currentObject : GameObjects::instance().Objects) {
 		s.syncAsUint16LE(currentObject->Index);
 		s.syncAsSint16LE(currentObject->Position.x);
@@ -1190,18 +1190,18 @@ Common::Error Macs2Engine::syncGame(Common::Serializer &s) {
 	}
 
 	// Handle the view
-	uint32_t numCharacters = 0;
+	uint32 numCharacters = 0;
 	if (s.isSaving()) {
 		numCharacters = currentView->characters.size();
 	} else {
 		currentView->characters.clear();
 	}
-	uint32_t bytesSynced = s.bytesSynced();
+	uint32 bytesSynced = s.bytesSynced();
 	s.syncAsUint32LE(bytesSynced);
 	assert(bytesSynced + 4 == s.bytesSynced());
 	s.syncAsUint32LE(numCharacters);
 	for (int i = 0; i < numCharacters; i++) {
-		uint32_t characterIndex;
+		uint32 characterIndex;
 		if (s.isSaving()) {
 			characterIndex = currentView->characters[i]->GameObject->Index;
 		}
@@ -1216,7 +1216,7 @@ Common::Error Macs2Engine::syncGame(Common::Serializer &s) {
 		}		
 	}
 
-	/* uint32_t numInventoryItems;
+	/* uint32 numInventoryItems;
 	if (s.isSaving()) {
 		numInventoryItems = currentView->inventoryItems.size();
 	} else {
@@ -1224,7 +1224,7 @@ Common::Error Macs2Engine::syncGame(Common::Serializer &s) {
 	}
 	s.syncAsUint32LE(numInventoryItems);
 	for (int i = 0; i < numInventoryItems; i++) {
-		uint32_t objectIndex;
+		uint32 objectIndex;
 		if (s.isSaving()) {
 			objectIndex = currentView->inventoryItems[i]->Index;
 		}
@@ -1300,9 +1300,9 @@ Common::Point AnimFrame::GetBottomMiddleOffset() const {
 	return Common::Point(Width / 2, Height);
 }
 
-AnimFrame BackgroundAnimationBlob::GetFrame(uint32_t index) {
+AnimFrame BackgroundAnimationBlob::GetFrame(uint32 index) {
 	AnimationReader animReader(Blob);
-	uint16_t numAnimations = animReader.readNumAnimations();
+	uint16 numAnimations = animReader.readNumAnimations();
 	debug("Number of animation frames for background object: %.4", numAnimations);
 
 	// TODO: Check consistency between 0 and 1 based indexing
@@ -1322,7 +1322,7 @@ AnimFrame BackgroundAnimationBlob::GetCurrentFrame() {
 	// TODO: Check the arguments used by the original
 	// TODO: TBC: There seem to be two used sets of args, false and 0 for getting the current
 	// frame and true and 2 for advancing the frame
-	uint16_t offset = Func1480(Blob, true, 0x2);
+	uint16 offset = Func1480(Blob, true, 0x2);
 	Common::MemoryReadStream* stream = new Common::MemoryReadStream(Blob.data(), Blob.size());
 	offset += 6;
 	stream->seek(offset);
@@ -1331,8 +1331,8 @@ AnimFrame BackgroundAnimationBlob::GetCurrentFrame() {
 	return result;
 }
 
-uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bpp6, uint16_t bpp8) {
-	uint16_t s = blob.size();
+uint16 BackgroundAnimationBlob::Func1480(Common::Array<uint8> &blob, bool bpp6, uint16 bpp8) {
+	uint16 s = blob.size();
 	if (s == 0x767) {
 		s = 1;
 	}
@@ -1349,9 +1349,9 @@ uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bp
 
 	
 	// bp-22h
-	uint16_t bp22 = stream.readUint16LE();
+	uint16 bp22 = stream.readUint16LE();
 	// bp-6h
-	uint16_t bp6 = stream.readUint16LE();
+	uint16 bp6 = stream.readUint16LE();
 	// bp-8h
 	uint16 bp8 = stream.readUint16LE();
 	// bp-0Ah
@@ -1359,10 +1359,10 @@ uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bp
 	// bp-10h
 	uint16 bp10 = stream.readUint16LE();
 	// bp-0Eh
-	uint16_t bp0E = stream.readUint16LE() + 1;
+	uint16 bp0E = stream.readUint16LE() + 1;
 
 	stream.seek(bp6 - 1, SEEK_CUR);
-	uint8_t bp0C = stream.readByte();
+	uint8 bp0C = stream.readByte();
 	if (bpp8 == 0x1) {
 		// l00B7_14B4:
 		bp8 = 0x00;
@@ -1418,10 +1418,10 @@ uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bp
 		}
 	}
 	// l00B7_1554:
-	uint16_t cx = bp0C - 0xA;
+	uint16 cx = bp0C - 0xA;
 	stream.seek(0xB,SEEK_SET);
 	stream.seek(bp0E, SEEK_CUR);
-	uint16_t bp24 = stream.readUint16LE();
+	uint16 bp24 = stream.readUint16LE();
 	if (cx > bp24) {
 		// l00B7_156A:
 		cx = 1;
@@ -1429,13 +1429,13 @@ uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bp
 	// l00B7_156D:
 	for (; cx > 1; cx--) {
 		// TODO: Check if the logic for the loop works out like this
-		uint16_t bp1A = stream.readUint16LE();
-		uint16_t bp1C = stream.readUint16LE();
+		uint16 bp1A = stream.readUint16LE();
+		uint16 bp1C = stream.readUint16LE();
 		stream.seek(0x2, SEEK_CUR);
-		uint16_t bp16 = stream.readUint16LE();
-		uint16_t bp18 = stream.readUint16LE();
+		uint16 bp16 = stream.readUint16LE();
+		uint16 bp18 = stream.readUint16LE();
 		// This is the amount of bytes of the frame (width * height)
-		uint16_t bx = bp16 * bp18;
+		uint16 bx = bp16 * bp18;
 		stream.seek(bx, SEEK_CUR);
 	}
 
@@ -1443,7 +1443,7 @@ uint16_t BackgroundAnimationBlob::Func1480(Common::Array<uint8_t> &blob, bool bp
 	// TODO: Due to difference in implementation of the loop, I don't need to rewind,
 	// but am probably doing a 
 	// stream.seek(-6, SEEK_CUR);
-	uint16_t bp12 = stream.pos();
+	uint16 bp12 = stream.pos();
 	// TODO: Check if indendation is right here
 	if (bpp8 == 0x02) {
 		if (bp0C >= 0xA) {
