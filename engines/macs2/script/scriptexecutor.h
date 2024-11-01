@@ -125,7 +125,7 @@ class GameObject;
 			// could be better
 			bool IsRepeatRun = false;
 
-			uint16_t executingObjectIndex;
+			uint16 executingObjectIndex;
 
 		
 			ScriptExecutionState scriptExecutionState = ScriptExecutionState::ExecutingSceneScript;
@@ -145,7 +145,7 @@ class GameObject;
 			
 
 			bool isTimerActive = false;
-			uint32_t timerEndMillis;
+			uint32 timerEndMillis;
 
 			// We use this array to gather the dialogue choices as they come in
 			Common::Array<Common::StringArray> DialogueChoices;
@@ -153,8 +153,8 @@ class GameObject;
 			
 
 			// TODO: Put in a git module
-			Common::String IdentifyScriptOpcode(uint8_t opcode, uint8_t opcode2);
-			Common::String IdentifyHelperOpcode(uint8_t opcode, uint16_t value);
+			Common::String IdentifyScriptOpcode(uint8 opcode, uint8 opcode2);
+			Common::String IdentifyHelperOpcode(uint8 opcode, uint16 value);
 
 
 			// Does pretty much what 9F07 does
@@ -164,7 +164,7 @@ class GameObject;
 			
 
 			// We use this to keep track of whether we have read all bytes we should have read
-			uint32_t expectedEndLocation;
+			uint32 expectedEndLocation;
 
 			void FuncA3D2();
 			void FuncA37A();
@@ -182,10 +182,10 @@ class GameObject;
 			void Func9F4D_Placeholder();
 
 			// Combines both 16 bit values into a 32 bit value
-			uint32_t Func9F4D_32();
+			uint32 Func9F4D_32();
 
 			// Returns only the first of the two 16 bit values
-			uint16_t Func9F4D_16();
+			uint16 Func9F4D_16();
 
 			// fn0037_C991 proc
 			// Implements a walk to
@@ -211,7 +211,7 @@ class GameObject;
 			// Global [0F92h], seems to be 0 if we execute the script of the scene
 			// and the object ID if we execute the script of another object
 			// TODO: Confirm that this covers all uses
-			uint16_t _executingScriptObjectID;
+			uint16 _executingScriptObjectID;
 			
 
 			
@@ -233,7 +233,7 @@ class GameObject;
 			// TODO: Identify number of variables and default values
 			Common::Array<ScriptVariable> _variables;
 
-			void SetVariableValue(uint16_t index, uint16_t a, uint16_t b);
+			void SetVariableValue(uint16 index, uint16 a, uint16 b);
 
 
 			Common::Point GetCharPosition();
@@ -267,7 +267,7 @@ class GameObject;
 
 			void tick();
 
-			void StartTimer(uint32_t duration);
+			void StartTimer(uint32 duration);
 			void EndTimer();
 
 			bool isRunningScript = false;

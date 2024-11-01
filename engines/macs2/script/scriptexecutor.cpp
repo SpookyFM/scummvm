@@ -34,16 +34,16 @@ namespace Script {
 #define ScriptNoEntry debug("Unhandled case in script handling.");
 #define STR_HELPER(x) #x
 
-	inline void ScriptUnimplementedOpcode(const char* source, uint16_t opcode) {
+	inline void ScriptUnimplementedOpcode(const char* source, uint16 opcode) {
 		debug("Unimplemented opcode (%s): %.2x.", source, opcode);
 	}
 
-	inline void ScriptUnimplementedOpcode_Helper(uint16_t opcode) {
+	inline void ScriptUnimplementedOpcode_Helper(uint16 opcode) {
 		// TODO: Could this also be done with a template?
 		ScriptUnimplementedOpcode("Helper", opcode);
 	}
 
-	inline void ScriptUnimplementedOpcode_Main(uint16_t opcode) {
+	inline void ScriptUnimplementedOpcode_Main(uint16 opcode) {
 		// TODO: Could this also be done with a template?
 		ScriptUnimplementedOpcode("Main", opcode);
 	}
@@ -176,13 +176,13 @@ void ScriptExecutor::FuncA37A() {
 }
 
 void ScriptExecutor::SkipUntil14() {
-	uint16_t tag = ReadWord();
+	uint16 tag = ReadWord();
 	_stream->seek(0, SEEK_SET);
 	while (_stream->pos() < _stream->size()) {
-		uint8_t opcode = ReadByte();
-		uint8_t length = ReadByte();
+		uint8 opcode = ReadByte();
+		uint8 length = ReadByte();
 		if (opcode == 0x14) {
-			uint16_t tag14 = ReadWord();
+			uint16 tag14 = ReadWord();
 			if (tag14 == tag) {
 				return;
 			}
@@ -459,7 +459,7 @@ else if (value == 0x6) {
 	return;
 	} else if (value == 0xb) {
 
-		out1 = (uint16_t)IsRepeatRun;
+		out1 = (uint16)IsRepeatRun;
 		out2 = 0;
 		SIS_Debug("- 9F4D results: %.4x %.4x", out1, out2);
 		return;
@@ -649,7 +649,7 @@ l0037_A1B1:
 l0037_A1B9:
 	jmp	0A32Ch
 		*/
-		out1 = (uint16_t)IsSceneInitRun;
+		out1 = (uint16)IsSceneInitRun;
 		out2 = 0;
 		SIS_Debug("- 9F4D results: %.4x %.4x", out1, out2);
 		return;
@@ -958,19 +958,19 @@ void ScriptExecutor::Func9F4D_Placeholder() {
 	Func9F4D_32();
 }
 
-uint32_t ScriptExecutor::Func9F4D_32() {
-	uint32_t result;
-	uint16_t out1;
-	uint16_t out2;
+uint32 ScriptExecutor::Func9F4D_32() {
+	uint32 result;
+	uint16 out1;
+	uint16 out2;
 	Func9F4D(out1, out2);
 
 	// TODO: Probably not portable
-	return (static_cast<uint32_t>(out2) << 16) + static_cast<uint32_t>(out1);
+	return (static_cast<uint32>(out2) << 16) + static_cast<uint32>(out1);
 }
 
-uint16_t ScriptExecutor::Func9F4D_16() {
-	uint16_t out1;
-	uint16_t out2;
+uint16 ScriptExecutor::Func9F4D_16() {
+	uint16 out1;
+	uint16 out2;
 	Func9F4D(out1, out2);
 	return out1;
 }
@@ -1042,15 +1042,15 @@ void ScriptExecutor::ScriptPrintString() {
 	// TODO: Lots of details not handled
 	// l0037_A94E:
 
-	uint16_t v1;
-	uint16_t v2;
+	uint16 v1;
+	uint16 v2;
 	Func9F4D(v1, v2);
-	uint16_t v3;
-	uint16_t v4;
+	uint16 v3;
+	uint16 v4;
 	Func9F4D(v3, v4);
 	// TODO: Several globals writes around this code
-	uint16_t bp2 = ReadWord();
-	uint16_t bp4 = ReadWord();
+	uint16 bp2 = ReadWord();
+	uint16 bp4 = ReadWord();
 
 	// TODO: Implement naive string printing here, refine later
 
@@ -1096,7 +1096,7 @@ void ScriptExecutor::SIS_Debug(const char *format, ...) {
 	va_end(args);
 }
 
-void ScriptExecutor::SetVariableValue(uint16_t index, uint16_t a, uint16_t b) {
+void ScriptExecutor::SetVariableValue(uint16 index, uint16 a, uint16 b) {
 	_variables[index].a = a;
 	_variables[index].b = b;
 }
@@ -1451,21 +1451,21 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 		else if (opcode1 == 0x02) {
 			// TODO: No idea what this byte achieves
 			ReadByte();
-			uint16_t variableIndex = ReadWord();
+			uint16 variableIndex = ReadWord();
 			// We skip the left shift and just read the first value directly
-			uint16_t throwaway;
-			uint16_t value1;
+			uint16 throwaway;
+			uint16 value1;
 			Func9F4D(throwaway, value1);
-			uint16_t value2;
-			uint16_t value3;
+			uint16 value2;
+			uint16 value3;
 			Func9F4D(value2, value3);
 			value2 |= value1;
 			value3 |= 0x00;
 			SetVariableValue(variableIndex, value2, value3);
 		} // l0037_DC21:
 		else if (opcode1 == 0x03) {
-			uint16_t res1;
-			uint16_t res2;
+			uint16 res1;
+			uint16 res2;
 			Func9F4D(res1, res2);
 			if (res1 | res2) {
 				FuncA3D2();
@@ -1593,8 +1593,8 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			// TODO: I had these the other way around before, but switched them for fixing
 			// the stone throw at the start of chapter 2. Not sure if this is really correct
 			// however, it might break other cases of this opcode
-			uint16_t object1 = Func9F4D_16();
-			uint16_t object2 = Func9F4D_16();
+			uint16 object1 = Func9F4D_16();
+			uint16 object2 = Func9F4D_16();
 			// TODO: This one might also do a skip
 			// Note: Need to check both combinations as order seems to not be important
 			const bool match1 = (interacted1 == object1) && (interacted2 == object2);
@@ -1615,9 +1615,9 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			// Trigger a walk to action
 			// TODO: Compare function for what exactly it does
 			// TODO: Check what the first value does
-			uint32_t objectID = Func9F4D_32() - 0x400;
-			int16_t x = (int16_t)Func9F4D_16();
-			int16_t y = (int16_t)Func9F4D_16();
+			uint32 objectID = Func9F4D_32() - 0x400;
+			int16 x = (int16)Func9F4D_16();
+			int16 y = (int16)Func9F4D_16();
 
 			View1 *currentView = (View1 *)_engine->findView("View1");
 			// TODO: Need to be able to address the character objects by ID, now relying
@@ -1631,7 +1631,7 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			// TODO: To check how this functionality is really done
 			// TODO: Compare function for what exactly it does
 			// TODO: Check what the first value does
-			uint32_t objectID = Func9F4D_32() - 0x400;
+			uint32 objectID = Func9F4D_32() - 0x400;
 			View1 *currentView = (View1 *)_engine->findView("View1");
 			// TODO: Need to be able to address the character objects by ID, now relying
 			// on the fact that they were added in a specific order
@@ -1662,12 +1662,12 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			// Lives in fn0037_AA83 proc
 			// TODO: Compare function for what exactly it does
 			// TODO: Should handle the return value as a 32 bit value
-			uint32_t objectID = Func9F4D_32() - 0x400;
+			uint32 objectID = Func9F4D_32() - 0x400;
 			// TODO: Check if these file reads happen every time this is called
 			// l0037_AB93:
-			uint16_t sceneID = Func9F4D_16();
-			int16_t x = (int16_t)Func9F4D_16();
-			int16_t y = (int16_t)Func9F4D_16();
+			uint16 sceneID = Func9F4D_16();
+			int16 x = (int16)Func9F4D_16();
+			int16 y = (int16)Func9F4D_16();
 			// TODO: Now actually place the object
 			// TODO: Need to handle 0 scene and moving to non-active scenes
 			// TODO: Need to handle negative numbers here
@@ -1750,7 +1750,7 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			}
 		} else if (opcode1 == 0x0c) {
 			// This is a scene change
-			uint32_t newSceneID = Func9F4D_32();
+			uint32 newSceneID = Func9F4D_32();
 			// No idea what these here do
 
 			Func9F4D_Placeholder();
@@ -1772,12 +1772,12 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			return ExecutionResult::WaitingForCallback;
 		} else if (opcode1 == 0x0d) {
 			// Show a dialogue option
-			uint32_t objectID = Func9F4D_32() - 0x400;
-			uint16_t x = Func9F4D_16();
-			uint16_t y = Func9F4D_16();
-			uint16_t side = Func9F4D_16();
-			uint32_t offset = ReadWord();
-			uint32_t numLines = ReadWord();
+			uint32 objectID = Func9F4D_32() - 0x400;
+			uint16 x = Func9F4D_16();
+			uint16 y = Func9F4D_16();
+			uint16 side = Func9F4D_16();
+			uint32 offset = ReadWord();
+			uint32 numLines = ReadWord();
 
 			View1 *currentView = (View1 *)_engine->findView("View1");
 
@@ -1808,7 +1808,7 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			uint16 duration = Func9F4D_16();
 			requestCallback = false;
 			// TODO: Need to figure out the units/duration of the timer
-			constexpr uint32_t durationMultiplier = 5;
+			constexpr uint32 durationMultiplier = 5;
 			StartTimer(duration * durationMultiplier);
 			isAwaitingCallback = true;
 			EndBuffering(lastOpcodeTriggeredSkip);
@@ -1831,21 +1831,21 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 
 		} else if (opcode1 == 0x16) {
 			// Add a dialogue choice
-			uint16_t index = Func9F4D_16();
+			uint16 index = Func9F4D_16();
 			// We don't save the index, instead we make sure that we add them in the right
 			// order and use the array to keep track
 			assert(index - 1 == DialogueChoices.size());
-			uint16_t offset = ReadWord();
-			uint16_t numLines = ReadWord();
+			uint16 offset = ReadWord();
+			uint16 numLines = ReadWord();
 			Common::StringArray lines = _engine->DecodeStrings(Scenes::instance().CurrentSceneStrings, offset, numLines);
 			DialogueChoices.push_back(lines);
 		} else if (opcode1 == 0x17) {
 			// Finish the dialogue choice
 
 			View1 *currentView = (View1 *)_engine->findView("View1");
-			uint32_t x = Func9F4D_32();
-			uint32_t y = Func9F4D_32();
-			uint16_t side = Func9F4D_16();
+			uint32 x = Func9F4D_32();
+			uint32 y = Func9F4D_32();
+			uint16 side = Func9F4D_16();
 			currentView->ShowDialogueChoice(DialogueChoices, Common::Point(x, y), side);
 			requestCallback = false;
 			// TODO: Could be special for me with the short timer times, but it can happen
@@ -1861,8 +1861,8 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			return ExecutionResult::ScriptFinished;
 		} else if (opcode1 == 0x19) {
 			// Walk to and pick up an object
-			uint32_t actorIndex = Func9F4D_32() - 0x400;
-			uint32_t objectIndex = Func9F4D_32() -0x400;
+			uint32 actorIndex = Func9F4D_32() - 0x400;
+			uint32 objectIndex = Func9F4D_32() -0x400;
 
 			// TODO: For now, handle this as a special case of lerping to a position
 			View1 *currentView = (View1 *)_engine->findView("View1");
@@ -1879,7 +1879,7 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 		} else if (opcode1 == 0x1b) {
 			// TODO: No idea yet what this does, it seems to be around move commands in some cases,
 			// and seems to go along with 1e
-			uint32_t objectID = Func9F4D_32();
+			uint32 objectID = Func9F4D_32();
 			Func9F4D_32();
 			Func9F4D_32();
 			// TODO: Still need to check if the object is actually already living in the scene at game start
@@ -1929,10 +1929,10 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			// TODO: Not fully understood - need to check how exactly it works
 			// Basically implements a move to (maybe in conjunction with an offset applied
 			// by opcode 0x20
-			uint32_t objectID = Func9F4D_32() - 0x400;
-			uint32_t x = Func9F4D_32();
-			uint32_t y = Func9F4D_32();
-			uint32_t unknown = Func9F4D_32();
+			uint32 objectID = Func9F4D_32() - 0x400;
+			uint32 x = Func9F4D_32();
+			uint32 y = Func9F4D_32();
+			uint32 unknown = Func9F4D_32();
 
 			View1 *currentView = (View1 *)_engine->findView("View1");
 			// TODO: Need to be able to address the character objects by ID, now relying
@@ -1949,7 +1949,7 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 
 			// Mock function A334 here
 			// TODO: No idea why but it only works out with offsets if is left out
-			// uint8_t v = ReadByte();
+			// uint8 v = ReadByte();
 			// TODO: We should check the value of v
 			// TODO: This seems to result in an error if it is malformed
 			// TODO: Check where that error reporting value leads to, could be interesting
@@ -1965,11 +1965,11 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 		}
 		else if (opcode1 == 0x26) {
 			// This one loads a special animation set
-			uint32_t id = Func9F4D_32() - 0x400;
+			uint32 id = Func9F4D_32() - 0x400;
 			// No idea yet what this one does
 			Func9F4D_Placeholder();
-			uint8_t animationID = ReadByte();
-			Common::Array<uint8_t> blob = Scenes::instance().ReadSpecialAnimBlob(animationID, g_engine->_fileStream);
+			uint8 animationID = ReadByte();
+			Common::Array<uint8> blob = Scenes::instance().ReadSpecialAnimBlob(animationID, g_engine->_fileStream);
 			GameObject *object = GameObjects::GetObjectByIndex(id);
 			object->Blobs.push_back(blob);
 			GameObjects::GetObjectByIndex(id)->testOverloadAnimation = object->Blobs.size() - 1;
@@ -1990,7 +1990,7 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			// hotspot's data
 			FuncC8E4();
 		} else if (opcode1 == 0x29) {
-			uint32_t objectID = Func9F4D_32();
+			uint32 objectID = Func9F4D_32();
 			objectID -= 0x400;
 			// Skip to the end of the script
 			_stream->seek(0, SEEK_END);
@@ -2004,7 +2004,7 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			// TODO: Not sure what this is about, current hypothesis is that this is loading object
 			// data for an object not yet added to the scene
 			// But it is called several times, for example for the gangster 406 in the scene 6 start
-			uint32_t objectID = Func9F4D_32() - 0x400;
+			uint32 objectID = Func9F4D_32() - 0x400;
 			Func9F4D_32();
 			Func9F4D_32();
 			ReadByte();
@@ -2027,8 +2027,8 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			// TODO: Guess is that we check if we have an inventory item
 			// This gets saved into [103Ch]
 			// TODO: This is handled as an object ID
-			uint16_t objectID = Func9F4D_16() - 0x400;
-			uint16_t parentID = Func9F4D_16() - 0x400;
+			uint16 objectID = Func9F4D_16() - 0x400;
+			uint16 parentID = Func9F4D_16() - 0x400;
 			const GameObject* object = GameObjects::GetObjectByIndex(objectID);
 			global103C = object->SceneIndex == parentID;
 		} else if (opcode1 == 0x2D) {
@@ -2147,7 +2147,7 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 		}
 	}
 
-	void ScriptExecutor::StartTimer(uint32_t duration) {
+	void ScriptExecutor::StartTimer(uint32 duration) {
 		isTimerActive = true;
 		timerEndMillis = g_engine->currentMillis + duration;
 	}

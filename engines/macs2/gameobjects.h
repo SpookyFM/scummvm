@@ -40,12 +40,12 @@ namespace Macs2 {
 		class Common::MemoryReadStream* CurrentSceneScript;
 
 		class Common::MemoryReadStream *CurrentSceneStrings;
-		Common::Array<uint32_t> CurrentSceneSpecialAnimOffsets;
+		Common::Array<uint32> CurrentSceneSpecialAnimOffsets;
 
-		class Common::MemoryReadStream *ReadSceneScript(uint16_t sceneIndex, Common::MemoryReadStream *fileStream);
-		Common::Array<uint32_t> ReadSpecialAnimsOffsets(uint16_t sceneIndex, Common::MemoryReadStream *fileStream);
-		class Common::MemoryReadStream *ReadSceneStrings(uint16_t sceneIndex, Common::MemoryReadStream *fileStream);
-		Common::Array<uint8_t> ReadSpecialAnimBlob(uint16_t index, Common::MemoryReadStream *fileStream);
+		class Common::MemoryReadStream *ReadSceneScript(uint16 sceneIndex, Common::MemoryReadStream *fileStream);
+		Common::Array<uint32> ReadSpecialAnimsOffsets(uint16 sceneIndex, Common::MemoryReadStream *fileStream);
+		class Common::MemoryReadStream *ReadSceneStrings(uint16 sceneIndex, Common::MemoryReadStream *fileStream);
+		Common::Array<uint8> ReadSpecialAnimBlob(uint16 index, Common::MemoryReadStream *fileStream);
 	};
 
 class AnimationReader {
@@ -56,11 +56,11 @@ class AnimationReader {
 		Common::MemoryReadStreamEndian *readStream;
 
 		// TODO: Can the init list also go into the cpp file?
-		AnimationReader(const Common::Array<uint8_t> &blob);
+		AnimationReader(const Common::Array<uint8> &blob);
 
-		uint16_t readNumAnimations();
+		uint16 readNumAnimations();
 
-		void SeekToAnimation(uint16_t index);
+		void SeekToAnimation(uint16 index);
 
 		// Expects us to be pointed at the header of an animation frame,
 		// will seek to the start of the next header
@@ -72,23 +72,23 @@ class GameObject {
 public:
 
 	// Index of the object, starting at 1
-	uint16_t Index;
+	uint16 Index;
 
 	int testOverloadAnimation = -1;
 
 	// These are the values read by the code around l0037_082D:
 	Common::Point Position;
-	uint16_t SceneIndex;
-	uint16_t Orientation;
-	uint16_t Unknown;
+	uint16 SceneIndex;
+	uint16 Orientation;
+	uint16 Unknown;
 
 	// Each object can have up to 15h blocks of data that are loaded, which can
 	// include the animations, the dialogue images, the inventory icons etc.
-	Common::Array<Common::Array<uint8_t> > Blobs;
+	Common::Array<Common::Array<uint8> > Blobs;
 
 	// The object-specific script
 	// TODO: Random thought - do objects have their own space for script variables?
-	Common::Array<uint8_t> Script;
+	Common::Array<uint8> Script;
 
 	Common::MemoryReadStream *GetScriptStream(); 
 };
@@ -105,9 +105,9 @@ public:
 
 	static GameObject *GetProtagonistObject();
 
-	static GameObject *GetObjectByIndex(uint16_t index);
+	static GameObject *GetObjectByIndex(uint16 index);
 
-	static class Common::MemoryReadStream *ReadGameObjectStrings(uint16_t index, Common::MemoryReadStream *fileStream);
+	static class Common::MemoryReadStream *ReadGameObjectStrings(uint16 index, Common::MemoryReadStream *fileStream);
 };
 
 } // namespace Macs2

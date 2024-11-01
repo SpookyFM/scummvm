@@ -72,7 +72,7 @@ private:
 	bool HandleWalkability(Character *c);
 
 	// fn0037_0E8C proc
-	uint8_t LookupWalkability(const Common::Point &p) const;
+	uint8 LookupWalkability(const Common::Point &p) const;
 	bool IsWalkable(const Common::Point &p) const;
 
 	
@@ -80,16 +80,16 @@ private:
 
 
 	public:
-	Common::Array<uint8_t> PathfindingOverlay;
+	Common::Array<uint8> PathfindingOverlay;
 	Character();
 
-	Common::Array<uint16_t> Path;
-	int16_t CurrentPathIndex;
+	Common::Array<uint16> Path;
+	int16 CurrentPathIndex;
 	Common::Point PathFinalDestination;
 
 	bool FindPath(Common::Point target);
 
-	bool VisitPathfindingNode(uint16_t index, Common::Array<bool> &visited, const Common::Point &target);
+	bool VisitPathfindingNode(uint16 index, Common::Array<bool> &visited, const Common::Point &target);
 
 	bool IsFollowingPath = false;
 
@@ -104,10 +104,10 @@ private:
 	bool ExecuteScriptOnFinishLerp;
 
 	// TODO: Handle properly
-	uint8_t animationIndex = 1;
+	uint8 animationIndex = 1;
 
 	bool isAnimationMirrored() const;
-	uint8_t getMirroredAnimation(uint8_t original) const;
+	uint8 getMirroredAnimation(uint8 original) const;
 
 		// TODO: Will need time handling
 	Macs2::AnimFrame *GetCurrentAnimationFrame();
@@ -126,7 +126,7 @@ private:
 	// cf https://stackoverflow.com/a/51497820
 	// TODO: Figure this one out
 	template<typename T, T... ts>
-	constexpr auto is_in_list(T const &t) {
+	constexpr bool is_in_list(T const &t) {
 		using unused = bool[];
 
 		bool ret{false};
@@ -226,7 +226,7 @@ public:
 	// If this is not null, we are using this object
 	GameObject *activeInventoryItem = nullptr;
 
-	Character *GetCharacterByIndex(uint16_t index);
+	Character *GetCharacterByIndex(uint16 index);
 
 	int GetCharacterArrayIndex(const Character *c) const;
 
@@ -248,24 +248,24 @@ public:
 
 	void startFading();
 
-	void DrawSprite(int16 x, int16 y, uint16 width, uint16 height, byte *data, Graphics::ManagedSurface &s, bool mirrored, bool useDepth = false, uint8_t depth = 0);
-	void DrawSprite(const Common::Point &pos, uint16 width, uint16 height, byte *data, Graphics::ManagedSurface &s, bool mirrored, bool useDepth = false, uint8_t depth = 0);
+	void DrawSprite(int16 x, int16 y, uint16 width, uint16 height, byte *data, Graphics::ManagedSurface &s, bool mirrored, bool useDepth = false, uint8 depth = 0);
+	void DrawSprite(const Common::Point &pos, uint16 width, uint16 height, byte *data, Graphics::ManagedSurface &s, bool mirrored, bool useDepth = false, uint8 depth = 0);
 	void DrawSpriteClipped(uint16 x, uint16 y, Common::Rect &clippingRect, uint16 width, uint16 height, const byte * const data, Graphics::ManagedSurface &s);
 	void DrawSpriteClipped(uint16 x, uint16 y, Common::Rect &clippingRect, const Sprite& sprite, Graphics::ManagedSurface &s);
 	void DrawSpriteAdvanced(uint16 x, uint16 y, uint16 width, uint16 height, uint16 scaling, byte *data, Graphics::ManagedSurface &s);
 
 	void DrawCharacters(Graphics::ManagedSurface &s);
 
-	void ShowSpeechAct(uint16_t characterIndex, const Common::Array<Common::String> &strings, const Common::Point &position, bool onRightSide = false);
+	void ShowSpeechAct(uint16 characterIndex, const Common::Array<Common::String> &strings, const Common::Point &position, bool onRightSide = false);
 	void DrawBorder(const Common::Point &pos, const Common::Point &size, Graphics::ManagedSurface &s);
 	void DrawBorderSide(const Common::Point &pos, const Common::Point &size, Graphics::ManagedSurface &s);
-	void DrawHorizontalBorderHighlight(const Common::Point &pos, int16 width, uint8_t unknown, Graphics::ManagedSurface &s);
+	void DrawHorizontalBorderHighlight(const Common::Point &pos, int16 width, uint8 unknown, Graphics::ManagedSurface &s);
 
 	void ShowDialogueChoice(const Common::Array<Common::StringArray> &choices, const Common::Point &position, bool onRightSide = false);
 
-	void TriggerDialogueChoice(uint8_t index);
+	void TriggerDialogueChoice(uint8 index);
 
-	uint16_t GetHitObjectID(const Common::Point &pos) const;
+	uint16 GetHitObjectID(const Common::Point &pos) const;
 };
 
 } // namespace Macs2

@@ -626,21 +626,21 @@ void Adlib::OnTimer() {
 		// TODO: Handle the loop properly
 		for (;;) {
 			// l0017_1B1A:
-			uint8_t current = peekByte();
+			uint8 current = peekByte();
 			if (current & 0x80) {
 				// l0017_1B27:
-				uint8_t copy = peekByte();
+				uint8 copy = peekByte();
 				g229B = copy;
 				g223E = copy;
 				data->seek(Func19BE(1), SEEK_SET);
 				g225A++;
 			}
 			// l0017_1B5F:
-			uint8_t bp3 = g229B & 0x0F;
-			uint8_t bp6 = g229B;
-			uint8_t bp4 = peekByte();
-			uint16_t bp10 = Func19BE(1);
-			uint8_t bp5 = peekByteAt(bp10);
+			uint8 bp3 = g229B & 0x0F;
+			uint8 bp6 = g229B;
+			uint8 bp4 = peekByte();
+			uint16 bp10 = Func19BE(1);
+			uint8 bp5 = peekByteAt(bp10);
 			
 			if ((bp6 & 0x0F) == 0x90) {
 				// l0017_1BA1:
@@ -652,7 +652,7 @@ void Adlib::OnTimer() {
 					if (g2291 == 0x09 || bp3 < 0x0B) {
 						// l0017_1BE4:
 						// TODO: Is this the first usage?
-						uint8_t bp8 = 0;
+						uint8 bp8 = 0;
 						// TODO: Figure out the loop conditions and correct indentation
 						do {
 							// l0017_1BE9:
@@ -662,10 +662,10 @@ void Adlib::OnTimer() {
 								// l0017_1BF3:
 								if (gArray222C[bp8] == 0) {
 									// l0017_1BFD:
-									uint8_t v = gArray227F[bp8];
+									uint8 v = gArray227F[bp8];
 									if (v == bp3) {
 										// l0017_1C09:
-										uint8_t v2 = gArray2235[bp8];
+										uint8 v2 = gArray2235[bp8];
 										if (v2 != bp4) {
 											// l0017_1C15:
 											bp8++;
@@ -681,13 +681,13 @@ void Adlib::OnTimer() {
 						// TODO: Not sure about removal of AH bits in the original
 						if (g2291 == bp8) {
 							// l0017_1C27:
-							uint16_t bp0C = 0;
+							uint16 bp0C = 0;
 							// TODO: Not sure about upper bits removal for both
 							bp8 = g2291;
-							uint16_t bp16 = g2291 - 1;
+							uint16 bp16 = g2291 - 1;
 							if (bp16 <= 0) {
 								// l0017_1C44:
-								uint16_t bp0A = 0;
+								uint16 bp0A = 0;
 								// TODO: Loop condition
 								do {
 									// l0017_1C49:
@@ -735,7 +735,7 @@ void Adlib::OnTimer() {
 									// before the calculation
 
 									// TODO: Not sure if I have the resurn value of Func19BE completely
-									uint16_t bp12 = Func19BE(gArray2288[bp8] << 0x4);
+									uint16 bp12 = Func19BE(gArray2288[bp8] << 0x4);
 									Func2839();
 									/*
 									
@@ -849,16 +849,16 @@ void Adlib::Func1A03() {
 	} while ((bp1 & 0x80) != 0);
 }
 
-uint8_t Adlib::peekByte() {
-	uint8_t result = data->readByte();
+uint8 Adlib::peekByte() {
+	uint8 result = data->readByte();
 	data->seek(-1, SEEK_CUR);
 	return result;
 }
 
-uint8_t Adlib::peekByteAt(uint16_t offset) {
+uint8 Adlib::peekByteAt(uint16 offset) {
 	int32 originalOffset = data->pos();
 	data->seek(offset, SEEK_SET);
-	uint8_t result = data->readByte();
+	uint8 result = data->readByte();
 	data->seek(originalOffset, SEEK_SET);
 	return result;
 }
