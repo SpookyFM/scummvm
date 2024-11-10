@@ -1037,7 +1037,7 @@ void View1::DrawVerticalBorderHighlight(const Common::Point &pos, int16 height, 
 	// TODO: Check which area we actually fill
 	uint16_t currentX = clippingRect.left;
 	uint16_t currentY = clippingRect.top;
-	const Sprite &sprite = g_engine->_borderSprite;
+	const Sprite &sprite = g_engine->_borderHighlightSprite;
 
 	while (currentY < clippingRect.bottom) {
 		DrawSpriteClipped(currentX, currentY, clippingRect, sprite, s);
