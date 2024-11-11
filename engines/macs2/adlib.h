@@ -64,14 +64,17 @@ namespace Macs2 {
 		// TODO: Consider adding the caller
 		void Func2839();
 
+		// [223Eh] - Seems to be a 16 bit value - Initial value?
+		uint16_t g223E;
+
 		// 	[2254h] and [2256h]
 		uint32 _nextEventTimer;
 
 		// [2258h] - TODO: Not sure about size - Initialization
 		uint8_t g2258;
 
-		// [223Eh] - Seems to be a 16 bit value - Initial value?
-		uint16_t g223E;
+		// [225Eh] - TODO: Not sure about size - Initialization
+		uint8_t g225E;
 
 		// [2291h] - Not sure how used - initialization?
 		uint16_t g2291;
