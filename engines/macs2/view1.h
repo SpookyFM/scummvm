@@ -101,7 +101,7 @@ private:
 	bool TryFollowPath();
 
 	// Set by opcode 11h
-	bool ExecuteScriptOnFinishLerp;
+	bool ExecuteScriptOnFinishLerp = false;
 
 	// TODO: Handle properly
 	uint8_t animationIndex = 1;
@@ -265,6 +265,8 @@ public:
 	void ShowDialogueChoice(const Common::Array<Common::StringArray> &choices, const Common::Point &position, bool onRightSide = false);
 
 	void TriggerDialogueChoice(uint8_t index);
+
+	uint16_t CalculateCharacterScaling(uint16_t characterY) const;
 
 	uint16_t GetHitObjectID(const Common::Point &pos) const;
 };
