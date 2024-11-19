@@ -143,9 +143,16 @@ private:
 		bool onRightSide;
 	};
 
+	struct ScalingValues {
+		uint16_t characterY;
+		uint16_t scalingFactor;
+	};
+
 class View1 : public UIElement {
 	// TODO: Clean up private and public
 		public:
+
+	ScalingValues scalingValues;
 
 	ViewMode currentMode = ViewMode::VM_GAME;
 
@@ -267,7 +274,7 @@ public:
 
 	void TriggerDialogueChoice(uint8_t index);
 
-	uint16_t CalculateCharacterScaling(uint16_t characterY) const;
+	uint16_t CalculateCharacterScaling(uint16_t characterY, bool updateDebugValues = false);
 
 	uint16_t GetHitObjectID(const Common::Point &pos) const;
 };
