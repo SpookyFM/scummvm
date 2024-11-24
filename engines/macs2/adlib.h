@@ -56,6 +56,8 @@ namespace Macs2 {
 		// TODO: Maybe we need to add the caller, fn0017_24FD proc
 		void Func2686();
 
+		void Func2779(uint8_t arg1, uint8_t args2);
+
 		// Writes a value to the target register
 		void Func2792(byte registerIndex, byte value);
 		void Func2792r(byte value, byte registerIndex) {
@@ -64,6 +66,9 @@ namespace Macs2 {
 		
 		// TODO: Consider adding the caller
 		void Func2839();
+
+		// Array accesed as [di + 96]
+		Common::Array<uint8_t> gArray96;
 
 		// [223Eh] - Seems to be a 16 bit value - Initial value?
 		uint16_t g223E;
