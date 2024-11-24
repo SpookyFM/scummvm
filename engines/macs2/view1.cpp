@@ -1011,10 +1011,10 @@ void View1::DrawBorder(const Common::Point &pos, const Common::Point &size, Grap
 
 	// Shadow parts, from top in clockwise order
 	// TODO: Adjust pos and sizes
-	DrawHorizontalBorderHighlight(pos + Common::Point(6, 6), size.x - 0xB, 0xFF, s);
-	DrawVerticalBorderHighlight(pos + Common::Point(1, 1), size.y - 1, 0xFF, s);
-	DrawHorizontalBorderHighlight(pos + Common::Point(1 + width, size.y - width + 1), size.x - 1 + width, 0xFF, s);
-	DrawVerticalBorderHighlight(pos + Common::Point(size.x + 1 - width, 1 + width), size.y - 1 - width, 0xFF, s);
+	DrawHorizontalBorderHighlight(pos + Common::Point(1, 1), size.x - 0xB, 0xFF, s);
+	DrawVerticalBorderHighlight(pos + Common::Point(width, width), size.y - 0xB, 0xFF, s);
+	DrawHorizontalBorderHighlight(pos + Common::Point(width, size.y - width), size.x - 0xB, 0xFF, s);
+	DrawVerticalBorderHighlight(pos + Common::Point(size.x - width, width), size.y - 0xB, 0xFF, s);
 
 }
 
@@ -1163,7 +1163,7 @@ bool Character::HandleWalkability(Character *c) {
 	// TODO: This is where the lerping will be off, since the game does this
 	// every time it adjusts by one pixel
 	// TODO: To check if the game actually moves by one pixel each frame only or
-	// íf it has a loop to do more than one per frame
+	// ï¿½f it has a loop to do more than one per frame
 	if (c->GameObject->Index != 1) {
 		// Other characters will always be able to walk normally
 		return false;
