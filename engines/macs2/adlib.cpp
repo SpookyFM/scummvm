@@ -221,7 +221,7 @@ l0017_2774:
 		*/
 }
 
-uint8_t Adlib::Func2779(uint8_t arg1, uint8_t args2) {
+uint8_t Adlib::Func2779(uint8_t arg1) {
 	return gArray229C[arg1];
 }
 
@@ -850,17 +850,17 @@ void Adlib::OnTimer() {
 										bp2 = 0x3F;
 									}
 									// 1DFAh
+									// TODO: Careful if argument are correct here,
+									// I stumbled over the 2 pushed values before calling
+									// the 1-arg function 2779
 									Func2792(bp8 + 0xb0, 0);
 
 									// TODO: Confirm that these are indeed identical
 									uint8_t arg1 = gArray96[bp8] + 0x40;
 									uint8_t arg2 = gArray96[bp8] + 0x40;
-									// TODO: Reverse 2779 before continuing
-									uint8_t result = Func2779(arg1, arg2);
+									uint8_t result = Func2779(arg1);
 									
-									// TODO: Clean up: I think that Func2779 does
-									// not pop an argument from the stack
-									Func2792(bp1 + result & 0xC0, 0);
+									Func2792(arg2, bp1 + result & 0xC0);
 									// TODO: Continue from here
 								}
 							}
