@@ -858,9 +858,12 @@ void Adlib::OnTimer() {
 									// TODO: Confirm that these are indeed identical
 									uint8_t arg1 = gArray96[bp8] + 0x40;
 									uint8_t arg2 = gArray96[bp8] + 0x40;
-									uint8_t result = Func2779(arg1);
 									
-									Func2779(arg2);
+									
+									uint8_t result = Func2779(arg2);
+									Func2792(arg1, (result & 0xC0) + bp1);
+
+									
 									// TODO: Continue from here
 								}
 							}
