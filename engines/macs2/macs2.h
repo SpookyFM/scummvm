@@ -265,6 +265,8 @@ public:
 
 	Common::Array<uint32_t> array520D;
 
+	void loadAnimationFromSceneData(uint16_t objectIndex, uint16_t slotIndex, uint8_t arrayIndex);
+
 
 	// Offset 50D3h - This is used in 0037:10C4 to terminate the loop
 	uint16_t word50D3;
