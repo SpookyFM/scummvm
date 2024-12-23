@@ -75,6 +75,12 @@ namespace Macs2 {
 		// Array accesed as [di + 96]
 		Common::Array<uint8_t> gArray96;
 
+		// Array accessed as [di+9Fh]
+		Common::Array<uint8_t> gArray9F;
+
+		// Array accessed as [di+11Fh];
+		Common::Array<uint8_t> gArray11F;
+
 		// [223Eh] - Seems to be a 16 bit value - Initial value?
 		uint16_t g223E;
 
