@@ -74,7 +74,8 @@ public:
 	// Index of the object, starting at 1
 	uint16_t Index;
 
-	int testOverloadAnimation = -1;
+	Common::Array<uint8_t> overloadAnimation;
+	bool useOverloadAnimation = false;
 
 	// These are the values read by the code around l0037_082D:
 	Common::Point Position;
