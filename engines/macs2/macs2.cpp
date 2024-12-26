@@ -779,6 +779,14 @@ void Macs2Engine::SetPathfindingOverride(uint16_t index, uint16_t overrideValue)
 	override.OverrideValue = overrideValue;
 	PathfindingOverrides.push_back(override);
 }
+
+uint8_t Macs2Engine::GetPathfindingOverride2(uint16_t index) {
+	// TODO: Need to be careful with this one, it might actually be needed at
+	// some point!
+	// It would be set by opcode 4D or maybe already pre-set
+	return 0;
+}
+
 void Macs2Engine::RemovePathfindingOverride(uint16_t index){
 	for (int i = 0; i < PathfindingOverrides.size(); i++) {
 		PathfindingAreaOverride &current = PathfindingOverrides[i];
