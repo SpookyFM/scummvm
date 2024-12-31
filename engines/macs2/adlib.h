@@ -67,7 +67,7 @@ namespace Macs2 {
 		// TODO: Consider adding the caller
 		void Func2839();
 
-		void Func294E();
+		void Func294E(uint16_t bpp6, uint8_t bpp8, uint16_t bppA);
 
 		// Array accessed as [di + 8dh]
 		Common::Array<uint8_t> gArray8d;
@@ -92,6 +92,9 @@ namespace Macs2 {
 
 		// [225Eh] - TODO: Not sure about size - Initialization
 		uint8_t g225E;
+
+		// Array at [di + 226F] - TODO: Initialization, values, ...?
+		Common::Array<uint8_t> gArray226F;
 
 		// [2291h] - Not sure how used - initialization?
 		uint16_t g2291;
