@@ -72,6 +72,9 @@ namespace Macs2 {
 		// Array accessed as [di + 8dh]
 		Common::Array<uint8_t> gArray8d;
 
+		// Array accesed as [di + 57]
+		Common::Array<uint8_t> gArray57;
+
 		// Array accesed as [di + 96]
 		Common::Array<uint8_t> gArray96;
 
