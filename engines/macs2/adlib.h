@@ -52,6 +52,7 @@ namespace Macs2 {
 		int64 pos() const override;
 		int64 size() const override;
 		bool seek(int64 offset, int whence) override;
+		byte peekByte();
 	};
 
 	class Adlib {
@@ -94,6 +95,9 @@ namespace Macs2 {
 		void Func2839(uint8_t bpp0A, uint32_t bpp06);
 
 		void Func294E(uint16_t bpp6, uint8_t bpp8, uint16_t bppA);
+
+		// Array accessed as [di + 37h]
+		Common::Array<uint8_t> gArray37;
 
 		// Array accessed as [di + 8dh]
 		Common::Array<uint8_t> gArray8d;
