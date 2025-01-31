@@ -181,6 +181,9 @@ namespace Macs2 {
 
 		// Reads a byte from the specified offset without changing the position in the stream
 		uint8_t peekByteAt(uint16_t offset);
+
+		// fn0017_2A80: 0017:2A80
+		uint8_t FuncA280();
 	
 
 	public:
