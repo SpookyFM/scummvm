@@ -183,7 +183,7 @@ namespace Macs2 {
 		uint8_t peekByteAt(uint16_t offset);
 
 		// fn0017_2A80: 0017:2A80
-		uint8_t FuncA280();
+		uint8_t FuncA280(uint8_t bpp6, uint8_t bpp8);
 	
 
 	public:
