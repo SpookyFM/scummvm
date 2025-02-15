@@ -110,6 +110,9 @@ namespace Macs2 {
 		// Array accessed as [di + 5C]
 		Common::Array<uint8_t> gArray5C;
 
+		// Array accessed as [di + 69]
+		Common::Array<uint8_t> gArray69;
+
 		// Array accesed as [di + 96]
 		Common::Array<uint8_t> gArray96;
 
@@ -146,7 +149,7 @@ namespace Macs2 {
 		// [2296h] - TODO: Initialization
 		uint16_t g2296;
 
-		// [2298h] - TODO: Initialization
+		// [2298h] - Set in 24FD
 		uint16_t g2298;
 
 		// [225Ah] - TODO: Initial value?
