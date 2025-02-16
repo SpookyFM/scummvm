@@ -132,6 +132,7 @@ namespace Macs2 {
 		uint32 _nextEventTimer;
 
 		// [2258h] - TODO: Not sure about size - Initialization
+		// Initialized in fn0017_24FD
 		uint8_t g2258;
 
 		// [2259h] - TODO: Not sure about size - Initialization
