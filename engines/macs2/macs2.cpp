@@ -754,13 +754,15 @@ void Macs2Engine::changeScene(uint32_t newSceneIndex, bool executeScript) {
 	Scenes::instance().CurrentSceneSpecialAnimOffsets = Scenes::instance().ReadSpecialAnimsOffsets(newSceneIndex, _fileStream);
 	_scriptExecutor->SetScript(Scenes::instance().CurrentSceneScript);
 
-	
+	if (newSceneIndex == 0x6) {
+		// TODO: Test code for song playing
+		loadSongFromSceneData(1);
+	}
 
 	if (executeScript) {
 		// Start the execution
 		_scriptExecutor->Run(true);
 	}
-
 
 	// TODO: Other important areas
 }
@@ -1274,16 +1276,17 @@ void Macs2Engine::loadAnimationFromSceneData(uint16_t objectIndex, uint16_t slot
 	go->Blobs[slotIndex - 1] = data;
 }
 
-void Macs2Engine::loadSongFromSceneData() {
-	uint8_t songID = 1;
+void Macs2Engine::loadSongFromSceneData(uint8_t dataIndex) {
 
-	uint32_t address = array520D[songID - 1];
+	uint32_t address = array520D[dataIndex - 1];
 	_fileStream->seek(address);
 	uint32_t size = _fileStream->readUint32LE();
 	_fileStream->seek(address + 0x4 + 0xC);
-	Common::Array<uint8_t> data;
-	data.resize(size);
-	_fileStream->read(data.data(), size);
+	// TODO: Also delete this one
+	Common::Array<uint8_t> *data = new Common::Array<uint8_t>();
+	data->resize(size);
+	_fileStream->read(data->data(), size);
+	StreamHandler *sh = new StreamHandler(data);
 	
 }
 
@@ -1300,7 +1303,7 @@ Common::Error Macs2Engine::run() {
 
 	// Initialize Adlib
 	_adlib->Init();
-
+	
 	// Set the engine's debugger console
 	setDebugger(new Console());
 
