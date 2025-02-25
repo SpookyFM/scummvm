@@ -775,7 +775,7 @@ void Macs2Engine::changeScene(uint32_t newSceneIndex, bool executeScript) {
 
 	if (newSceneIndex == 0x6) {
 		// TODO: Test code for song playing
-		loadSongFromSceneData(1);
+		loadSongFromSceneData(7);
 	}
 
 	if (executeScript) {
@@ -1300,7 +1300,6 @@ void Macs2Engine::loadSongFromSceneData(uint8_t dataIndex) {
 	uint32_t address = array520D[dataIndex - 1];
 	_fileStream->seek(address);
 	uint32_t size = _fileStream->readUint32LE();
-	_fileStream->seek(address + 0x4 + 0xC);
 	// TODO: Also delete this one
 	Common::Array<uint8_t> *data = new Common::Array<uint8_t>();
 	data->resize(size);
