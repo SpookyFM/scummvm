@@ -80,10 +80,10 @@ namespace Macs2 {
 		void Func244D(StreamHandler *song);
 
 		// TODO: Maybe need to add the caller
-		void Func24FD();
+		uint16_t Func24FD();
 
 		// TODO: Maybe we need to add the caller, fn0017_24FD proc
-		void Func2686();
+		uint16_t Func2686();
 
 		uint8_t Func2779(uint8_t arg1);
 
@@ -103,7 +103,7 @@ namespace Macs2 {
 		void Func294E(uint16_t bpp6, uint8_t bpp8, uint16_t bppA);
 
 		// TODO: Where initialized?
-		uint8_t g37;
+		uint8_t g36;
 
 		// Array accessed as [di + 37h]
 		Common::Array<uint8_t> gArray37;
@@ -131,6 +131,7 @@ namespace Macs2 {
 		Common::Array<uint8_t> gArray11F;
 
 		// [223Eh] - Seems to be a 16 bit value - Initial value?
+		// TODO: Could also be a 32 bit or pointer with 2240
 		uint16_t g223E;
 
 		// Memory being pointed to by [2244] and [2246]
@@ -165,6 +166,7 @@ namespace Macs2 {
 		Common::Array<uint8_t> gArray226F;
 
 		// [2291h] - Not sure how used - initialization?
+		// TODO: Not sure if this is not actually a byte value
 		uint16_t g2291;
 
 		// [2296h] - TODO: Initialization
@@ -175,7 +177,11 @@ namespace Macs2 {
 		uint16_t g2298 = 5;
 
 		// [225Ah] - TODO: Initial value?
+		// TODO: could also be a 32-bit value or a pointer together
+		// with 225C
 		uint16_t g225A;
+
+		uint16_t g225C;
 
 		// Array at [222Ch] - accessed with byte values
 		// TODO: Initialization, access pattern
