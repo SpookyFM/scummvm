@@ -137,6 +137,9 @@ namespace Macs2 {
 		// Global word variable [2240h]
 		uint16_t g2240;
 
+		// Global byte varialbe [2242]
+		uint8_t g2242;
+
 		// Global word variable [224Eh]
 		uint16_t g224E;
 
