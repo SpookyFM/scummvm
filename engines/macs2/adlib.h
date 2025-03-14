@@ -92,9 +92,7 @@ namespace Macs2 {
 		void Func27E4();
 		
 		// TODO: Consider adding the caller
-		// TODO: Mocked input parameters so far, should be an 8 bit value
-		// and a pointer into memory
-		void Func2839(uint8_t bpp0A, uint32_t bpp06);
+		void Func2839(uint8_t bpp0A, StreamHandler* sh);
 
 		void Func294E(uint16_t bpp6, uint8_t bpp8, uint16_t bppA);
 
