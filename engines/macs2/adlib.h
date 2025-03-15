@@ -224,6 +224,8 @@ namespace Macs2 {
 
 	void ReadDataFromExecutable(Common::MemoryReadStream *fileStream);
 
+	void LoadData(Common::MemoryReadStream *fileStream, int64 pos, uint16_t size, void *target);
+
 		
 	};
 
