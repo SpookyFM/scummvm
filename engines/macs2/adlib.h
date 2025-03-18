@@ -94,7 +94,7 @@ namespace Macs2 {
 		// TODO: Consider adding the caller
 		void Func2839(uint8_t bpp0A, StreamHandler* sh);
 
-		void Func294E(uint16_t bpp6, uint8_t bpp8, uint16_t bppA);
+		void Func294E(uint16_t bppA, uint8_t bpp8, uint16_t bpp6);
 
 		// TODO: Where initialized?
 		uint8_t g36;
