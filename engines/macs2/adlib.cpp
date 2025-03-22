@@ -404,7 +404,7 @@ void Adlib::Func2839(uint8_t bpp0A, StreamHandler* sh) {
 	Func2792(bpp0A + 0xC0, value);
 }
 
-void Adlib::Func294E(uint16_t bpp6, uint8_t bpp8, uint16_t bppA) {
+void Adlib::Func294E(uint16_t bppA, uint8_t bpp8, uint16_t bpp6) {
 	uint16_t bp4;
 	uint8_t bp6;
 	/*
@@ -418,7 +418,7 @@ void Adlib::Func294E(uint16_t bpp6, uint8_t bpp8, uint16_t bppA) {
 	uint16_t dx = al;
 	al = gArray11F[bpp8];
 	// TODO: Check if we need 16 bits
-	uint16_t bp2 = al << 0x8;
+	uint16_t bp2 = (al << 0x8) + dx;
 	if (bpp6 != 0) {
 		// l0017_297F:
 		if (bpp6 < 0x80) {
@@ -466,9 +466,8 @@ void Adlib::Func294E(uint16_t bpp6, uint8_t bpp8, uint16_t bppA) {
 	}
 	// l0017_2A4F:
 
-	// TODO: Original code is making sure that only 8 bit are pushed
-	// for the second argument using AND FFh - check if ranges matter here
-	Func2792(bppA + 0xA0, bp2);
+	// My version relies on the 16 bit value being correctly cast to 8 bit
+	Func2792(bppA + 0xA0, bp2 & 0xFF);
 	Func2792(bppA + 0xB0, (bp2 >> 0x8) | 0x20);
 }
 
@@ -1025,20 +1024,22 @@ void Adlib::OnTimer() {
 			}
 		}
 	}
+	else {
+		// This is the jump target from 1B00 from before the big loop
+		// l0017_2425:
+		if ((g2258 & 0xC2) != 0) {
+			// l0017_242E:
+			SIS_LogEntry(0x01D7, 0x242E);
+			debug("Unimplemented");
+			// TODO: I think this just calls the function again
+			// Func1A74();
+		}
+		// l0017_2433:
+		Func27E4();
+	}
 
 	// l0017_2422
 	// TODO: sti
-
-	// l0017_2425:
-	if ((g2258 & 0xC2) != 0) {
-		// l0017_242E:
-		SIS_LogEntry(0x01D7, 0x242E);
-		debug("Unimplemented");
-		// TODO: I think this just calls the function again
-		// Func1A74();
-	}
-	// l0017_2433:
-	Func27E4();
 
 	// l0017_2438:
 	if (g229A == 0) {
@@ -1189,7 +1190,7 @@ void Adlib::Init() {
 	gArray2288.resize(0x9);
 	gArray2235.resize(0x9);
 
-#define CALLBACKS_PER_SECOND 10
+#define CALLBACKS_PER_SECOND 120
 	_opl->start(new Common::Functor0Mem<void, Adlib>(this, &Adlib::OnTimer), CALLBACKS_PER_SECOND);
 
 	// Func1A03();
