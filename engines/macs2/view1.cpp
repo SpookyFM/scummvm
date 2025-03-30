@@ -714,7 +714,8 @@ void View1::draw() {
 	// DrawSprite(100, 100, g_engine->_stick.Width, g_engine->_stick.Height, g_engine->_stick.Data, s);
 
 	if (_isShowingInventory) {
-		drawInventory(s);
+		// drawInventory(s);
+		drawInventory2(s);
 	}
 
 	if (activeInventoryItem != nullptr) {
@@ -836,8 +837,8 @@ void View1::drawInventory2(Graphics::ManagedSurface &s) {
 	// First, draw the whole background
 	// Happens around l0037_47A1:
 
-	uint16_t maxWidthButtonIcon = 0;
-	uint16_t maxHeightButtonIcon = 0;
+	uint16_t maxWidthButtonIcon = 0; // [0FE0h]
+	uint16_t maxHeightButtonIcon = 0; // [0FE2h]
 	for (uint16_t index : g_engine->inventoryIconIndices) {
 		AnimFrame& currentFrame = g_engine->imageResources[index];
 		maxWidthButtonIcon = MAX(maxWidthButtonIcon, currentFrame.Width);
@@ -845,8 +846,8 @@ void View1::drawInventory2(Graphics::ManagedSurface &s) {
 		maxHeightButtonIcon = MAX(maxHeightButtonIcon, currentFrame.Height);
 	}
 
-	uint16_t maxWidthInventoryIcon = 0;
-	uint16_t maxHeightInventoryIcon = 0;
+	uint16_t maxWidthInventoryIcon = 0x20; // [0FDCh]
+	uint16_t maxHeightInventoryIcon = 0x20; // [0FDEh]
 
 
 	for (GameObject* currentInventoryObject : inventoryItems) {
@@ -859,8 +860,16 @@ void View1::drawInventory2(Graphics::ManagedSurface &s) {
 	// TODO: Verify these in emulator
 	uint16_t widthCandidate1 = (maxWidthButtonIcon + 4) * 6 + 4;
 	uint16_t widthCandidate2 = (maxWidthInventoryIcon + 6 + 4) * 5 + 0xC;
-	uint16_t width = MAX(widthCandidate1, widthCandidate2);
-	
+	uint16_t width = MAX(widthCandidate1, widthCandidate2); // [0FD8h]
+
+	// Height calculation
+	uint16 height = (maxHeightInventoryIcon + 6 + 4) * 2 + maxHeightButtonIcon + 0x6 + 0x10; // [0FDAh]
+
+	// Position calculation - TODO: Proper position
+	uint16_t x = 0; // [0FD4h]
+	uint16_t y = 0; // [0FD6h]
+
+	DrawBorder(Common::Point(x, y), Common::Point(width, height), s);
 }
 
 GameObject *View1::getClickedInventoryItem(const Common::Point &p) {
