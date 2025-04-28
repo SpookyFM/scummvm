@@ -1150,6 +1150,10 @@ void Macs2Engine::NextCursorMode() {
 	}
 }
 
+void Macs2Engine::SetCursorMode(Script::MouseMode newMode) {
+	_scriptExecutor->_mouseMode = newMode;
+}
+
 uint16_t Macs2Engine::GetInteractedBackgroundHotspot(const Common::Point &p) {
 	uint16_t result = 0;
 	// TODO: Abstract the screen sizes
