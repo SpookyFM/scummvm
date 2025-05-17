@@ -1154,6 +1154,17 @@ void Macs2Engine::SetCursorMode(Script::MouseMode newMode) {
 	_scriptExecutor->_mouseMode = newMode;
 }
 
+void Macs2Engine::DumpStream(Common::MemoryReadStream *s, uint16_t len) {
+	int64 start_pos = s->pos();
+	Common::String result;
+	for (int i = 0; i < len; i++) {
+		uint8_t v = s->readByte();
+		result += Common::String::format("%.2X", v);
+	}
+	debug(result.c_str());
+	s->seek(start_pos, SEEK_SET);
+}
+
 uint16_t Macs2Engine::GetInteractedBackgroundHotspot(const Common::Point &p) {
 	uint16_t result = 0;
 	// TODO: Abstract the screen sizes
@@ -1270,6 +1281,10 @@ Common::StringArray Macs2Engine::DecodeStrings(Common::MemoryReadStream *stream,
 	byte x;
 	byte y;
 	byte r;
+
+	debug("String decoding: Inner loop started");
+	DumpStream(stream, 64);
+	
 	
 	for (int i = 0; i < numStrings; i++) {
 		Common::String currentLine;
