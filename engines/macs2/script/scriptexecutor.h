@@ -205,6 +205,9 @@ class GameObject;
 			// Returns only the first of the two 16 bit values
 			uint16_t Func9F4D_16();
 
+			// Saves the given value in a script variable
+			void FuncA334(uint32_t value);
+
 			// fn0037_C991 proc
 			// Implements a walk to
 			void FuncC991();
@@ -262,6 +265,8 @@ class GameObject;
 			Common::Array<ScriptVariable> _variables;
 
 			void SetVariableValue(uint16_t index, uint16_t a, uint16_t b);
+
+			void SetVariableValue(uint16_t index, uint32_t value);
 
 
 			Common::Point GetCharPosition();

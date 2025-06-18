@@ -958,6 +958,14 @@ uint16_t ScriptExecutor::Func9F4D_16() {
 	return out1;
 }
 
+void ScriptExecutor::FuncA334(uint32_t value) {
+	// TODO: Why is this byte never really used?
+	uint8_t b = ReadByte();
+
+	uint16_t variableID = ReadWord();
+	SetVariableValue(variableID, value);
+}
+
 void ScriptExecutor::FuncC991() {
 
 	uint16 objectID1;
@@ -1122,6 +1130,12 @@ void ScriptExecutor::SIS_Debug(const char *format, ...) {
 void ScriptExecutor::SetVariableValue(uint16_t index, uint16_t a, uint16_t b) {
 	_variables[index].a = a;
 	_variables[index].b = b;
+}
+
+void ScriptExecutor::SetVariableValue(uint16_t index, uint32_t value) {
+	uint16_t a = static_cast<uint16_t>(value >> 16);    // High 16 bits
+	uint16_t b = static_cast<uint16_t>(value & 0xFFFF); // Low 16 bits
+	SetVariableValue(index, b, a);
 }
 
 Common::Point ScriptExecutor::GetCharPosition() {
@@ -2350,24 +2364,20 @@ ExecutionResult Script::ScriptExecutor::ExecuteScript() {
 			// TODO: Not yet identified opcode
 			Func9F4D_Placeholder();
 		} else if (opcode1 == 0x48) {
-			// TODO: No idea yet
-			Func9F4D_Placeholder();
-			// Also functions inside A334
-			ReadByte();
-			ReadWord();
+			// Retrieve object x and use A334 to save it to a script variable
+			uint32_t objectID = Func9F4D_32() - 0x400;
+			GameObject *object = GameObjects::GetObjectByIndex(objectID);
+			FuncA334(object->Position.x);
 		} else if (opcode1 == 0x49) {
-			// TODO: No idea yet but probably something like the inverse of opcode 48h
-			Func9F4D_Placeholder();
-			// Also functions inside A334
-			ReadByte();
-			ReadWord();
+			// Retrieve object y and use A334 to save it to a script variable
+			uint32_t objectID = Func9F4D_32() - 0x400;
+			GameObject *object = GameObjects::GetObjectByIndex(objectID);
+			FuncA334(object->Position.y);
 		} else if (opcode1 == 0x4B) {
-			// TODO: No idea yet but probably something like the inverse of opcode 48h
-			Func9F4D_Placeholder();
-			// Also functions inside A334
-			ReadByte();
-			ReadWord();
-
+			// Retrieve object orientation and use A334 to save it to a script variable
+			uint32_t objectID = Func9F4D_32() - 0x400;
+			GameObject *object = GameObjects::GetObjectByIndex(objectID);
+			FuncA334(object->Orientation);
 		} else if (opcode1 == 0x4D) {
 			// TODO: No idea yet what this does - it does manipulate a value that is used during
 			// pathfinding/walkability calculations
