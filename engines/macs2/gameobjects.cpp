@@ -110,7 +110,7 @@ void Macs2::GameObjects::Init() {
 	ObjectNames[0x24] = "Axt";
 	ObjectNames[0x24] = "Whiskyglas"; // leer
 	ObjectNames[0x2E] = "Whiykglas";
-	ObjectNames[0x30] = "Schürhaken";
+	ObjectNames[0x30] = "Schï¿½rhaken";
 	ObjectNames[0x43] = "Koffer"; // geschlossen
 	ObjectNames[0x47] = "Messer";
 	ObjectNames[0x49] = "Kartonschachtel";
@@ -120,7 +120,7 @@ void Macs2::GameObjects::Init() {
 	ObjectNames[0x55] = "Brot";
 	ObjectNames[0x56] = "Brotmesser";
 	ObjectNames[0x57] = "Brot";
-	ObjectNames[0x58] = "Bücher";
+	ObjectNames[0x58] = "Bï¿½cher";
 	ObjectNames[0x59] = "Clownpuppe";
 	ObjectNames[0x5B] = "Blechdose";
 	ObjectNames[0x5D] = "Papierdrache";
@@ -140,11 +140,11 @@ void Macs2::GameObjects::Init() {
 	ObjectNames[0x74] = "Schaufel";
 	ObjectNames[0x70] = "Musketen";
 	ObjectNames[0x73] = "Salpeter";
-	ObjectNames[0x74] = "Schüssel"; // mit Teig
+	ObjectNames[0x74] = "Schï¿½ssel"; // mit Teig
 	ObjectNames[0x76] = "Lampenschirm";
 	ObjectNames[0x77] = "Lampenschirme";
-	ObjectNames[0x78] = "Messingschlüssel";
-	ObjectNames[0x7C] = "Schüssel"; // mit Schwefel
+	ObjectNames[0x78] = "Messingschlï¿½ssel";
+	ObjectNames[0x7C] = "Schï¿½ssel"; // mit Schwefel
 	ObjectNames[0x7E] = "Schwarzpulver";
 	ObjectNames[0x7F] = "Schwefel";
 	ObjectNames[0x82] = "Seil";
@@ -153,16 +153,21 @@ void Macs2::GameObjects::Init() {
 	ObjectNames[0x85] = "Holzente";
 	ObjectNames[0x86] = "Streichholz";
 	ObjectNames[0x82] = "Seil";
-	ObjectNames[0x88] = "Tasse"; // mit Öl
+	ObjectNames[0x88] = "Tasse"; // mit ï¿½l
 	ObjectNames[0x89] = "Teig";
 	ObjectNames[0x8A] = "Topflappen";
 	ObjectNames[0x8B] = "Windlicht";
 	ObjectNames[0x8C] = "Wolle";
 	ObjectNames[0x8D] = "Wolle"; // mit Alkohol
-	ObjectNames[0x8E] = "Holzwürfel";
+	ObjectNames[0x8E] = "Holzwï¿½rfel";
 	ObjectNames[0x8F] = "Brief";
 	ObjectNames[0x9C] = "Fackel"; // brennend
 	ObjectNames[0x9D] = "Fackel"; // erloschen
+	ObjectNames[0x98] = "Bohlen";
+	ObjectNames[0x9D] = "Fackel";
+	ObjectNames[0xA2] = "Haken";
+	ObjectNames[0xA2] = "Haken und Seil";
+	ObjectNames[0xAE] = "Seil";
 }
 
 // TODO: Add all to namespace?
