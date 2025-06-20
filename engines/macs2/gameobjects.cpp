@@ -161,12 +161,14 @@ void Macs2::GameObjects::Init() {
 	ObjectNames[0x8D] = "Wolle"; // mit Alkohol
 	ObjectNames[0x8E] = "Holzw�rfel";
 	ObjectNames[0x8F] = "Brief";
+	ObjectNames[0x99] = "Brecheisen";
 	ObjectNames[0x9C] = "Fackel"; // brennend
 	ObjectNames[0x9D] = "Fackel"; // erloschen
 	ObjectNames[0x98] = "Bohlen";
 	ObjectNames[0x9D] = "Fackel";
+	ObjectNames[0xA1] = "Seilzug";
 	ObjectNames[0xA2] = "Haken";
-	ObjectNames[0xA2] = "Haken und Seil";
+	ObjectNames[0xA3] = "Haken und Seil";
 	ObjectNames[0xAE] = "Seil";
 }
 
